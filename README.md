@@ -1,36 +1,203 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Shrey Shah — Personal Portfolio Website
 
-## Getting Started
+> **"Infrastructure that holds. AI that helps fix it."**
+> A personal portfolio engineered for **Shrey Shah**, an IT Infrastructure Engineer who builds applied AI systems (RAG pipelines, LangGraph agents, QLoRA fine-tuning, and operations automations).
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 1. Overview & Core Narrative
+
+Most AI engineers have never run production infrastructure (racked a server, debugged a RAID volume over SSH, or managed Active Directory replication). Most infrastructure engineers have never built a guarded LangGraph agent or fine-tuned an LLM with QLoRA.
+
+**Shrey bridges both worlds.** This portfolio embodies the principle of **"Infrastructure-Aware AI"**:
+* Restrained, crisp Apple-inspired aesthetic (generous whitespace, typography-led hierarchy, dark default + light toggle).
+* Interactive, draggable procedural 3D models built with React Three Fiber.
+* GSAP ScrollTrigger pinned storytelling and Framer Motion eased transitions.
+* Interactive Glass Terminal / Command Palette (launch with `⌘K` or `Ctrl+K`).
+* 100% typed content architecture located in `/content` for seamless editing.
+
+---
+
+## 2. Tech Stack
+
+| Layer | Choice |
+| :--- | :--- |
+| **Framework** | Next.js 15 (App Router, Turbopack) + TypeScript |
+| **Styling** | Tailwind CSS v4 with design tokens defined via CSS variables |
+| **Motion** | Framer Motion (component animation) + GSAP ScrollTrigger (scroll-pinned storytelling) |
+| **Smooth Scroll** | Lenis with `prefers-reduced-motion` safety |
+| **3D Graphics** | React Three Fiber + `@react-three/drei` (DPR capped at 1.5, offscreen canvas pause) |
+| **Icons** | `lucide-react` + handcrafted SVG icons |
+| **Typography** | `Inter` / `Geist` (UI), `JetBrains Mono` / `Geist Mono` (code, metrics, terminal) |
+| **Content Layer** | Typed data files in `/content` (no CMS required) |
+| **Backend** | Next.js Route Handlers (`/app/api/contact`, `/app/api/chat`) with Zod validation |
+| **Target Deployment** | Vercel (static-friendly, edge-ready) |
+
+---
+
+## 3. Project Structure
+
+```
+shrey-portfolio/
+├── app/
+│   ├── api/
+│   │   ├── contact/route.ts      # Contact form API with Zod validation & Resend
+│   │   └── chat/route.ts         # Runbook Copilot live demo streaming proxy
+│   ├── projects/[slug]/page.tsx  # Dynamic SSG case study pages
+│   ├── globals.css               # Design tokens, Tailwind v4 imports, glass styling
+│   ├── layout.tsx                # App layout, metadata, JSON-LD, Lenis, theme provider
+│   ├── page.tsx                  # Home page assembling all 10 core sections
+│   ├── icon.tsx                  # Dynamic SVG/PNG favicon generator
+│   ├── opengraph-image.tsx       # Dynamic edge OG preview image generator
+│   ├── robots.ts                 # Crawler access policy
+│   └── sitemap.ts                # Dynamic XML sitemap generator
+├── components/
+│   ├── motion/                   # Reveal, SplitText, Counter, Magnetic, TiltCard, PageIntro
+│   ├── sections/                 # Hero, Stats, Intersection, RunbookCopilot, Projects,
+│   │                             # FieldNotes, Skills, Experience, Credentials, Contact
+│   ├── three/                    # SceneWrapper, IntersectionScene, NasExploded,
+│   │                             # AgentGraph, DualRegionGlobe, Project3DViewer
+│   └── ui/                       # GlassCard, Nav, Footer, ThemeToggle, Terminal, Cursor
+├── content/
+│   ├── site.ts                   # Site metadata, taglines, links, feature flags
+│   ├── stats.ts                  # Real impact statistics
+│   ├── projects.ts               # Complete project deep dives & LangGraph specs
+│   ├── experience.ts             # Career history (ITCG Solutions, Nupur, URO)
+│   ├── skills.ts                 # 10-category technical matrix with tooltips
+│   ├── credentials.ts            # Degrees (Conestoga, ITM) & Certifications (NAKIVO, Google, AI Core)
+│   └── fieldNotes.ts             # Real incident triage case studies
+├── lib/
+│   ├── theme.tsx                 # Dark/light mode theme provider & hook
+│   ├── lenis.tsx                 # Smooth scroll wrapper
+│   ├── useReducedMotion.ts       # Accessibility reduced motion hook
+│   └── utils.ts                  # Class merger utility (clsx + tailwind-merge)
+├── public/
+│   └── Shrey_Shah_Resume.pdf     # Official résumé file
+├── .env.example                  # Environment configuration template
+└── README.md                     # Documentation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 4. Design System & CSS Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Tokens are declared in `app/globals.css` and react dynamically to the `[data-theme]` attribute:
 
-## Learn More
+```css
+--bg:            #000000   /* light: #FBFBFD */
+--bg-elevated:   #0B0B0F   /* light: #FFFFFF */
+--surface-glass: rgba(255,255,255,0.04) with backdrop-blur(20px)
+--border:        rgba(255,255,255,0.08)
+--text-primary:  #F5F5F7   /* light: #1D1D1F */
+--text-secondary:#A1A1A6   /* light: #6E6E73 */
+--accent:        #2997FF   /* Cool blue */
+--accent-2:      #5EEAD4   /* Teal — reserved for AI moments & gradients */
+--success-led:   #30D158   /* Status LED on 3D hardware */
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 5. Getting Started Locally
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
+* Node.js 18.18+ or 20+ (tested on Node v24)
+* npm, pnpm, or yarn
 
-## Deploy on Vercel
+### Installation
+```bash
+# Clone or navigate to the project directory
+cd shrey-portfolio
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Install dependencies (use legacy peer deps for React 19 / R3F alignment if prompted)
+npm install --legacy-peer-deps
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Create your local environment file
+cp .env.example .env.local
+
+# Start the Turbopack development server
+npm run dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to view the live site.
+
+### Build & Type Verification
+```bash
+# Verify TypeScript types and generate production static assets
+npm run build
+
+# Run ESLint validation
+npm run lint
+```
+
+---
+
+## 6. Environment Variables (`.env.local`)
+
+Copy `.env.example` to `.env.local` and populate the values:
+
+```bash
+# Base site URL for sitemaps and OG metadata
+NEXT_PUBLIC_SITE_URL="https://shreyshah.dev"
+
+# Optional public demo link for Runbook Copilot (when live)
+NEXT_PUBLIC_DEMO_URL=""
+
+# Resend API for the Contact Form
+RESEND_API_KEY="re_your_api_key_here"
+CONTACT_TO_EMAIL="Shrey6131@gmail.com"
+
+# Runbook Copilot GPU inference backend (Modal / Render)
+RUNBOOK_COPILOT_API_URL=""
+RUNBOOK_COPILOT_TOKEN=""
+```
+
+*Note: In development mode, if `RESEND_API_KEY` is not set, form submissions are logged cleanly to the server terminal and return 200 OK.*
+
+---
+
+## 7. Deployment to Vercel
+
+The portfolio is designed to deploy to [Vercel](https://vercel.com) with zero server-only incompatibilities.
+
+1. Push your repository to GitHub (`github.com/shrey220201/portfolio`).
+2. Log in to [Vercel](https://vercel.com) and click **"Add New Project"**.
+3. Select your GitHub repository.
+4. Framework Preset will auto-detect as **Next.js**.
+5. Under **Environment Variables**, add:
+   * `NEXT_PUBLIC_SITE_URL` (e.g. `https://your-domain.vercel.app`)
+   * `RESEND_API_KEY` (optional, for real email forwarding)
+   * `CONTACT_TO_EMAIL`
+6. Click **Deploy**.
+
+---
+
+## 8. Customizing Content & Placeholders
+
+All text, projects, credentials, and settings are managed in `/content/`:
+* **Site flags & links**: Edit [`/content/site.ts`](file:///C:/Users/Shrey/.gemini/antigravity/scratch/shrey-portfolio/content/site.ts).
+  - Toggle `flags.showPhone` to true when ready to display your phone number.
+  - Update `placeholders.runbookCopilotRepoUrl` with your actual GitHub repo link.
+* **Résumé file**: Replace [`/public/Shrey_Shah_Resume.pdf`](file:///C:/Users/Shrey/.gemini/antigravity/scratch/shrey-portfolio/public/Shrey_Shah_Resume.pdf) with your updated resume PDF.
+* **Adding or updating projects**: Modify [`/content/projects.ts`](file:///C:/Users/Shrey/.gemini/antigravity/scratch/shrey-portfolio/content/projects.ts). The SSG router automatically builds new case studies for any added slugs.
+
+---
+
+## 9. Interactive CLI Easter Egg
+
+Press **`⌘K`** (macOS) or **`Ctrl+K`** (Windows) anywhere on the site or click the **`>_`** button in the bottom-right corner to open the glass terminal.
+
+Available commands:
+* `whoami` — Summary and philosophy
+* `skills` — Technical capability matrix
+* `projects` — Active architectures and projects
+* `cat runbook-copilot.md` — Flagship system specifications & metrics
+* `experience` — Career path and promotion details
+* `resume` — Downloads official résumé PDF
+* `contact` — Direct channels and location
+* `theme dark` / `theme light` — Toggle system appearance
+* `clear` — Clear terminal history
+* `sudo hire shrey` — Root access onboarding sequence that routes to the contact channel!
+
+---
+
+*Designed & engineered with Next.js 15, Tailwind CSS v4, Framer Motion, and React Three Fiber.*
