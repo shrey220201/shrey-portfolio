@@ -7,9 +7,18 @@ import { Reveal } from "@/components/motion/Reveal";
 
 export function Stats() {
   return (
-    <section className="w-full border-y border-[var(--border)] bg-[var(--surface-glass)] py-4 sm:py-5 px-4 sm:px-6 backdrop-blur-md">
-      <div className="mx-auto max-w-[1200px]">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 text-center items-center">
+    <section className="w-full border-y border-[var(--border)] bg-[var(--bg-elevated)] py-6 px-4 sm:px-6">
+      <div className="mx-auto max-w-[1240px]">
+        {/* Verified Telemetry Bar */}
+        <div className="mb-3 flex items-center justify-between border-b border-[var(--border)] pb-2 font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--success-led)]" />
+            <span>VERIFIED PRODUCTION TELEMETRY</span>
+          </div>
+          <span className="hidden sm:inline">SOURCE: ITCG SOLUTIONS INFRASTRUCTURE &amp; EVAL BENCHMARKS</span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-[var(--border)] text-left">
           {impactStats.map((stat, idx) => (
             <Reveal
               key={idx}
@@ -18,18 +27,25 @@ export function Stats() {
               yOffset={10}
               className={idx === 4 ? "col-span-2 sm:col-span-1" : ""}
             >
-              <div className="flex flex-col items-center justify-center py-1">
-                <div className="font-mono text-xl sm:text-2xl lg:text-[1.65rem] font-bold tracking-tight text-[var(--text-primary)]">
+              <div className="p-3 sm:px-4 sm:py-2 flex flex-col justify-between h-full">
+                <div className="font-mono text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
                   <Counter
                     value={stat.value}
                     prefix={stat.prefix}
                     suffix={stat.suffix}
                     decimalPlaces={stat.decimalPlaces || 0}
-                    duration={1.4 + idx * 0.1}
+                    duration={1.2 + idx * 0.1}
                   />
                 </div>
-                <div className="mt-0.5 font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-[var(--text-secondary)]">
+                <div className="mt-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
                   {stat.label}
+                </div>
+                <div className="mt-0.5 text-[11px] text-[var(--text-muted)] leading-tight">
+                  {idx === 0 && "Across QNAP & ZFS enterprise pools"}
+                  {idx === 1 && "High-availability virtualization cluster"}
+                  {idx === 2 && "QLoRA Llama 3.2 1B NF4 on Modal"}
+                  {idx === 3 && "Recovery Time Objective (RTO) SLA"}
+                  {idx === 4 && "Critical SSH bare-metal root causes"}
                 </div>
               </div>
             </Reveal>

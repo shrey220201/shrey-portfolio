@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, CheckCircle2, AlertTriangle, Layers, ExternalLink } from "lucide-react";
 import { projects } from "@/content/projects";
-import { GlassCard } from "@/components/ui/GlassCard";
 import { GithubIcon } from "@/components/ui/Footer";
 import { Project3DViewer } from "@/components/three/Project3DViewer";
 
@@ -29,11 +28,11 @@ export default async function ProjectDetailPage({
 
   return (
     <article className="min-h-screen px-6 py-12 md:py-20">
-      <div className="mx-auto max-w-[1000px]">
+      <div className="mx-auto max-w-[1040px]">
         {/* Back Link */}
         <Link
           href="/projects"
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-glass)] px-4 py-2 font-mono text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-secondary)] transition-colors mb-12"
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-2 font-mono text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors mb-10"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           <span>Back to All Projects</span>
@@ -41,30 +40,30 @@ export default async function ProjectDetailPage({
 
         {/* Case Study Header */}
         <div className="mb-12">
-          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[var(--accent)] mb-3">
+          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[var(--accent)] mb-3 font-semibold">
             <span>Case Study</span>
-            <span>·</span>
+            <span>&middot;</span>
             <span>{project.category}</span>
           </div>
 
-          <h1 className="text-3xl font-semibold tracking-[-0.03em] sm:text-5xl md:text-6xl text-[var(--text-primary)]">
+          <h1 className="text-3xl font-bold tracking-[-0.035em] sm:text-5xl md:text-6xl text-[var(--text-primary)]">
             {project.title}
           </h1>
 
-          <p className="mt-4 font-mono text-base sm:text-lg text-[var(--accent-2)]">
+          <p className="mt-3 font-mono text-base sm:text-lg text-[var(--accent)]">
             {project.tagline}
           </p>
 
-          <p className="mt-6 text-base text-[var(--text-secondary)] leading-relaxed max-w-[800px]">
+          <p className="mt-5 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed max-w-[800px]">
             {project.summary}
           </p>
 
           {/* Tech Stack Chips */}
-          <div className="mt-8 flex flex-wrap gap-2">
+          <div className="mt-6 flex flex-wrap gap-2">
             {project.stack.map((tech) => (
               <span
                 key={tech}
-                className="rounded-lg border border-[var(--border)] bg-[var(--surface-glass)] px-3 py-1 font-mono text-xs text-[var(--text-secondary)]"
+                className="rounded border border-[var(--border)] bg-[var(--bg-card)] px-2.5 py-1 font-mono text-xs text-[var(--text-secondary)]"
               >
                 {tech}
               </span>
@@ -91,14 +90,14 @@ export default async function ProjectDetailPage({
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-5 py-2.5 text-xs font-medium text-[var(--text-primary)] hover:border-[var(--text-secondary)]"
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elevated)] px-5 py-2.5 text-xs font-medium text-[var(--text-primary)] hover:border-[var(--border-strong)]"
               >
                 <span>Live Demonstration</span>
                 <ExternalLink className="h-3 w-3" />
               </a>
             ) : (
-              <span className="font-mono text-xs text-[var(--text-secondary)]">
-                Internal enterprise deployment / Open repo
+              <span className="font-mono text-xs text-[var(--text-muted)]">
+                Internal enterprise deployment &middot; Production Hardened
               </span>
             )}
           </div>
@@ -106,28 +105,28 @@ export default async function ProjectDetailPage({
 
         {/* Impact Metrics */}
         {project.metrics && (
-          <div className="mb-14 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="mb-12 grid grid-cols-2 sm:grid-cols-4 gap-3">
             {project.metrics.map((m, idx) => (
-              <GlassCard key={idx} className="p-5 text-center">
+              <div key={idx} className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-5 text-left">
                 <div className="font-mono text-2xl sm:text-3xl font-bold text-[var(--accent)]">
                   {m.value}
                 </div>
-                <div className="mt-1 font-mono text-[11px] text-[var(--text-secondary)] uppercase tracking-wider">
+                <div className="mt-1 font-mono text-[10px] sm:text-[11px] text-[var(--text-secondary)] uppercase tracking-wider font-semibold">
                   {m.label}
                 </div>
-              </GlassCard>
+              </div>
             ))}
           </div>
         )}
 
         {/* Interactive 3D Model Stage (if project has a 3D simulation) */}
         {project.has3dModel && (
-          <div className="mb-14 rounded-2xl border border-[var(--border)] bg-[var(--surface-glass)] p-6 backdrop-blur-xl">
-            <div className="flex items-center justify-between mb-4 border-b border-[var(--border)] pb-3">
-              <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[var(--accent-2)]">
+          <div className="mb-12 rounded-2xl border border-[var(--border-strong)] bg-[var(--bg-card)] p-6">
+            <div className="flex items-center justify-between mb-4 border-b border-[var(--border)] pb-3 font-mono text-xs">
+              <span className="font-semibold uppercase tracking-wider text-[var(--accent)]">
                 Interactive 3D System Topology
               </span>
-              <span className="font-mono text-[10px] text-[var(--text-secondary)]">
+              <span className="text-[10px] text-[var(--text-muted)]">
                 Draggable Procedural Simulation
               </span>
             </div>
@@ -137,59 +136,59 @@ export default async function ProjectDetailPage({
         )}
 
         {/* Narrative Sections */}
-        <div className="space-y-10">
+        <div className="space-y-8">
           {/* Problem */}
-          <GlassCard className="p-8">
-            <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-[var(--accent)] mb-4">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-6 sm:p-8">
+            <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-[var(--warning-led)] mb-4">
               <AlertTriangle className="h-4 w-4" />
-              <span>Problem Context & Objectives</span>
+              <span>Problem Context &amp; Objectives</span>
             </div>
             <ul className="space-y-3">
               {project.problem.map((p, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-sm text-[var(--text-secondary)] leading-relaxed">
-                  <span className="font-mono text-xs text-[var(--accent)] mt-0.5">•</span>
+                <li key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                  <span className="font-mono text-xs text-[var(--accent)] mt-0.5">&bull;</span>
                   <span>{p}</span>
                 </li>
               ))}
             </ul>
-          </GlassCard>
+          </div>
 
           {/* Approach */}
-          <GlassCard className="p-8">
-            <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-[var(--accent-2)] mb-4">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-6 sm:p-8">
+            <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-[var(--accent)] mb-4">
               <Layers className="h-4 w-4" />
-              <span>Architectural Execution & Methodology</span>
+              <span>Architectural Execution &amp; Methodology</span>
             </div>
-            <ul className="space-y-4">
+            <ul className="space-y-3.5">
               {project.approach.map((step, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-sm text-[var(--text-secondary)] leading-relaxed">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--accent-2)] mt-0.5" />
+                <li key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--accent)] mt-0.5" />
                   <span>{step}</span>
                 </li>
               ))}
             </ul>
-          </GlassCard>
+          </div>
 
           {/* Results */}
-          <GlassCard className="p-8">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-6 sm:p-8">
             <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-[var(--success-led)] mb-4">
               <CheckCircle2 className="h-4 w-4" />
-              <span>Deliverables & Measured Impact</span>
+              <span>Deliverables &amp; Measured Impact</span>
             </div>
             <ul className="space-y-3">
               {project.results.map((res, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-sm font-medium text-[var(--text-primary)] leading-relaxed">
-                  <span className="font-mono text-xs text-[var(--success-led)] mt-0.5">✓</span>
+                <li key={idx} className="flex items-start gap-3 text-xs sm:text-sm font-medium text-[var(--text-primary)] leading-relaxed">
+                  <span className="font-mono text-xs text-[var(--success-led)] mt-0.5">&check;</span>
                   <span>{res}</span>
                 </li>
               ))}
             </ul>
-          </GlassCard>
+          </div>
         </div>
 
         {/* Related Projects */}
-        <div className="mt-20 border-t border-[var(--border)] pt-12">
-          <h3 className="font-mono text-xs uppercase tracking-wider text-[var(--text-secondary)] mb-6">
+        <div className="mt-16 border-t border-[var(--border)] pt-10">
+          <h3 className="font-mono text-xs uppercase tracking-wider text-[var(--text-muted)] mb-5">
             Explore Other Architectures
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -197,15 +196,15 @@ export default async function ProjectDetailPage({
               <Link
                 key={other.slug}
                 href={`/projects/${other.slug}`}
-                className="group rounded-2xl border border-[var(--border)] bg-[var(--surface-glass)] p-5 transition-all hover:border-[var(--accent)]"
+                className="group rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] p-5 transition-all hover:border-[var(--border-strong)]"
               >
                 <span className="font-mono text-[10px] uppercase text-[var(--accent)] block mb-1">
                   {other.category}
                 </span>
-                <h4 className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
+                <h4 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
                   {other.title}
                 </h4>
-                <div className="mt-3 flex items-center gap-1 font-mono text-[11px] text-[var(--text-secondary)]">
+                <div className="mt-3 flex items-center gap-1 font-mono text-[11px] text-[var(--text-muted)]">
                   <span>Read case study</span>
                   <ArrowUpRight className="h-3 w-3" />
                 </div>

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Command } from "lucide-react";
 import { siteConfig } from "@/content/site";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -15,7 +15,7 @@ export function Nav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+      setScrolled(window.scrollY > 20);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -31,28 +31,29 @@ export function Nav() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 flex justify-center px-4 pt-3 md:pt-5">
+    <header className="fixed top-0 left-0 right-0 z-40 flex justify-center px-4 pt-3 md:pt-4">
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className={`flex w-full max-w-[1100px] items-center justify-between rounded-full border border-[var(--border)] px-4 py-2 transition-all duration-300 md:px-6 ${
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className={`flex w-full max-w-[1140px] items-center justify-between rounded-full border border-[var(--border)] px-4 py-2 transition-all duration-300 md:px-5 ${
           scrolled
-            ? "bg-[var(--bg-elevated)]/85 backdrop-blur-xl shadow-lg shadow-black/5"
+            ? "bg-[var(--bg-elevated)]/90 backdrop-blur-xl shadow-lg shadow-black/10 border-[var(--border-strong)]"
             : "bg-[var(--surface-glass)] backdrop-blur-md"
         }`}
       >
-        {/* Brand Monogram */}
+        {/* Brand Monogram & Name */}
         <Link
           href="/"
-          className="group flex items-center gap-2.5 text-sm font-semibold tracking-tight text-[var(--text-primary)]"
+          className="group flex items-center gap-2.5 text-xs font-semibold tracking-tight text-[var(--text-primary)]"
         >
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--text-primary)] text-xs font-bold text-[var(--bg)] transition-transform duration-300 group-hover:scale-105">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--text-primary)] font-mono text-[11px] font-bold text-[var(--bg)] transition-transform duration-300 group-hover:scale-105">
             SS
           </span>
           <span className="font-mono text-xs tracking-wider uppercase text-[var(--text-primary)] font-semibold">
             Shrey Shah
           </span>
+          <span className="hidden sm:inline-block h-1.5 w-1.5 rounded-full bg-[var(--success-led)] animate-pulse" />
         </Link>
 
         {/* Desktop Links */}
@@ -73,7 +74,7 @@ export function Nav() {
                 {isActive && (
                   <motion.span
                     layoutId="activeNavPill"
-                    className="absolute inset-0 rounded-full bg-[var(--text-primary)]/10"
+                    className="absolute inset-0 rounded-full bg-[var(--surface-hover)] border border-[var(--border-strong)]"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -85,13 +86,28 @@ export function Nav() {
 
         {/* Action Controls */}
         <div className="flex items-center gap-2">
+          {/* Quick Command Hint */}
+          <button
+            type="button"
+            onClick={() => {
+              window.dispatchEvent(
+                new KeyboardEvent("keydown", { key: "k", metaKey: true, bubbles: true })
+              );
+            }}
+            className="hidden lg:flex items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--bg-card)] px-2 py-1 font-mono text-[10px] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors"
+            title="Open Command Palette (⌘K)"
+          >
+            <Command className="h-3 w-3" />
+            <span>K</span>
+          </button>
+
           <ThemeToggle />
 
           <a
             href={siteConfig.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1 rounded-full bg-[var(--text-primary)] px-3.5 py-1.5 text-xs font-medium text-[var(--bg)] transition-opacity hover:opacity-90"
+            className="hidden sm:inline-flex items-center gap-1 rounded-full bg-[var(--text-primary)] px-3.5 py-1.5 text-xs font-semibold text-[var(--bg)] transition-opacity hover:opacity-90"
           >
             Resume
             <ArrowUpRight className="h-3 w-3" />
@@ -117,7 +133,7 @@ export function Nav() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-16 left-4 right-4 z-40 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)]/95 p-4 backdrop-blur-2xl md:hidden shadow-2xl"
+            className="absolute top-16 left-4 right-4 z-40 overflow-hidden rounded-2xl border border-[var(--border-strong)] bg-[var(--bg-elevated)]/95 p-4 backdrop-blur-2xl md:hidden shadow-2xl"
           >
             <div className="flex flex-col gap-1">
               {siteConfig.navLinks.map((link) => (
@@ -125,22 +141,22 @@ export function Nav() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${
+                  className={`rounded-xl px-4 py-2.5 text-xs font-medium transition-colors ${
                     isLinkActive(link.href)
-                      ? "bg-[var(--text-primary)]/10 text-[var(--text-primary)] font-semibold"
-                      : "text-[var(--text-secondary)] hover:bg-[var(--surface-glass)] hover:text-[var(--text-primary)]"
+                      ? "bg-[var(--surface-hover)] text-[var(--text-primary)] font-semibold border border-[var(--border)]"
+                      : "text-[var(--text-secondary)] hover:bg-[var(--surface-hover)] hover:text-[var(--text-primary)]"
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
               <div className="mt-2 pt-2 border-t border-[var(--border)] flex justify-between items-center px-4">
-                <span className="text-xs text-[var(--text-secondary)]">Download CV</span>
+                <span className="font-mono text-xs text-[var(--text-muted)]">Download CV</span>
                 <a
                   href={siteConfig.resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--accent)]"
+                  className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-[var(--accent)]"
                 >
                   Resume PDF
                   <ArrowUpRight className="h-3.5 w-3.5" />

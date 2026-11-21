@@ -3,43 +3,42 @@
 import React from "react";
 import { GraduationCap, Award, Check } from "lucide-react";
 import { educationList, certifications } from "@/content/credentials";
-import { GlassCard } from "@/components/ui/GlassCard";
 import { Reveal } from "@/components/motion/Reveal";
 import { TiltCard } from "@/components/motion/TiltCard";
 
 export function Credentials() {
   return (
-    <section id="credentials" className="relative w-full py-12 md:py-16 px-6">
-      <div className="mx-auto max-w-[1200px]">
+    <section id="credentials" className="relative w-full py-16 px-6">
+      <div className="mx-auto max-w-[1240px]">
         {/* Section Header */}
-        <div className="mb-10 max-w-[720px]">
-          <p className="eyebrow mb-3">FOUNDATION & CREDENTIALS</p>
-          <h2 className="text-3xl font-semibold tracking-[-0.03em] sm:text-5xl md:text-6xl text-[var(--text-primary)]">
-            Education & Certifications.
+        <div className="mb-10 max-w-[760px]">
+          <p className="eyebrow mb-2">ACADEMIC FOUNDATION &amp; INDUSTRY CREDENTIALS</p>
+          <h2 className="text-3xl font-bold tracking-[-0.035em] sm:text-5xl md:text-6xl text-[var(--text-primary)]">
+            Education &amp; Certs.
           </h2>
-          <p className="mt-4 text-base text-[var(--text-secondary)] leading-relaxed">
-            Formal academic background in network &amp; systems engineering and industry credentials across enterprise storage, infrastructure, and applied AI.
+          <p className="mt-3 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+            Formal degree in network &amp; systems engineering combined with certified vendor training in enterprise storage arrays, immutable backups, and applied LLM workflows.
           </p>
         </div>
 
         {/* Two Columns: Education & Certifications */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Education Column (5 cols) */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-[var(--accent)] mb-2">
               <GraduationCap className="h-4 w-4" />
-              <span>Academic Education</span>
+              <span>Academic Degrees</span>
             </div>
 
             {educationList.map((edu, idx) => (
               <Reveal key={idx} delay={idx * 0.1} duration={0.8}>
-                <GlassCard className="p-6">
-                  <div className="flex items-center justify-between mb-2">
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-6 transition-all duration-300 hover:border-[var(--border-strong)]">
+                  <div className="flex items-center justify-between mb-3">
                     <span className="font-mono text-xs text-[var(--accent)] font-semibold">
                       {edu.date}
                     </span>
                     {edu.gpa && (
-                      <span className="rounded-full border border-[var(--border)] bg-[var(--surface-glass)] px-2.5 py-0.5 font-mono text-[11px] text-[var(--text-primary)]">
+                      <span className="rounded-md border border-[var(--border)] bg-[var(--bg-card)] px-2 py-0.5 font-mono text-[11px] text-[var(--text-primary)] font-semibold">
                         GPA: {edu.gpa}
                       </span>
                     )}
@@ -48,8 +47,8 @@ export function Credentials() {
                   <h3 className="text-lg font-bold text-[var(--text-primary)]">
                     {edu.degree}
                   </h3>
-                  <p className="font-mono text-xs text-[var(--text-secondary)] mt-1">
-                    {edu.institution} · {edu.location}
+                  <p className="font-mono text-xs text-[var(--text-secondary)] mt-0.5">
+                    {edu.institution} &middot; {edu.location}
                   </p>
 
                   {edu.focus && (
@@ -57,16 +56,16 @@ export function Credentials() {
                       {edu.focus}
                     </p>
                   )}
-                </GlassCard>
+                </div>
               </Reveal>
             ))}
           </div>
 
           {/* Certifications Badge Wall (7 cols) */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-[var(--accent-2)] mb-2">
+          <div className="lg:col-span-7 space-y-4">
+            <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-[var(--accent)] mb-2">
               <Award className="h-4 w-4" />
-              <span>Certifications & Specialized Tracks</span>
+              <span>Industry Certifications &amp; Tracks</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -80,26 +79,26 @@ export function Credentials() {
                     duration={0.8}
                     className={isAI ? "sm:col-span-2" : ""}
                   >
-                    <TiltCard maxTilt={4} className="h-full">
-                      <GlassCard
-                        className={`h-full p-5 flex flex-col justify-between ${
+                    <TiltCard maxTilt={2} className="h-full">
+                      <div
+                        className={`h-full p-5 flex flex-col justify-between rounded-2xl border bg-[var(--bg-elevated)] transition-all duration-300 hover:border-[var(--border-strong)] ${
                           isAI
-                            ? "border-[var(--accent-2)]/30 bg-gradient-to-r from-[var(--surface-glass)] to-[var(--accent-2)]/5"
-                            : ""
+                            ? "border-[var(--accent)]/40 bg-[var(--bg-card)]"
+                            : "border-[var(--border)]"
                         }`}
                       >
                         <div>
                           {/* Monogram / Category Indicator */}
                           <div className="flex items-center justify-between mb-3">
-                            <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] font-mono text-xs font-bold text-[var(--text-primary)]">
+                            <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-strong)] bg-[var(--bg)] font-mono text-xs font-bold text-[var(--accent)]">
                               {cert.name.charAt(0)}
                             </span>
-                            <span className="font-mono text-[10px] text-[var(--text-secondary)]">
+                            <span className="font-mono text-[10px] text-[var(--text-muted)]">
                               {cert.date}
                             </span>
                           </div>
 
-                          <h4 className="text-sm font-semibold text-[var(--text-primary)] leading-snug">
+                          <h4 className="text-sm font-bold text-[var(--text-primary)] leading-snug">
                             {cert.name}
                           </h4>
                           <p className="font-mono text-[11px] text-[var(--accent)] mt-0.5">
@@ -114,13 +113,13 @@ export function Credentials() {
                                 key={sIdx}
                                 className="flex items-center gap-1.5 text-[11px] text-[var(--text-secondary)]"
                               >
-                                <Check className="h-3 w-3 text-[var(--accent-2)] shrink-0" />
+                                <Check className="h-3 w-3 text-[var(--accent)] shrink-0" />
                                 <span>{skill}</span>
                               </div>
                             ))}
                           </div>
                         </div>
-                      </GlassCard>
+                      </div>
                     </TiltCard>
                   </Reveal>
                 );

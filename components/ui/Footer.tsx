@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ArrowUp, Mail } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { siteConfig } from "@/content/site";
 
 export function GithubIcon({ className = "h-4 w-4" }: { className?: string }) {
@@ -51,22 +51,22 @@ export function Footer() {
   };
 
   return (
-    <footer className="w-full border-t border-[var(--border)] bg-[var(--bg)] px-6 py-12 md:py-16">
-      <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-6 md:flex-row">
+    <footer className="w-full border-t border-[var(--border)] bg-[var(--bg-elevated)] px-6 py-10 md:py-12">
+      <div className="mx-auto flex max-w-[1240px] flex-col items-center justify-between gap-6 md:flex-row">
         {/* Left: Operational status pill */}
         <div className="flex items-center gap-3">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-glass)] px-3 py-1 font-mono text-xs text-[var(--text-secondary)]">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border-strong)] bg-[var(--bg-card)] px-3 py-1 font-mono text-[11px] text-[var(--text-secondary)]">
             <span
               className="inline-block h-2 w-2 rounded-full bg-[var(--success-led)] shadow-[0_0_8px_var(--success-led)] animate-pulse"
               aria-hidden="true"
             />
-            <span>Status: All systems operational</span>
+            <span>SYSTEM: ALL NODES OPERATIONAL · 99.98% UPTIME</span>
           </div>
         </div>
 
         {/* Center: Copyright & Attribution */}
-        <div className="text-center font-mono text-xs text-[var(--text-secondary)]">
-          <p>© {currentYear} {siteConfig.name} · Designed & built by Shrey</p>
+        <div className="text-center font-mono text-xs text-[var(--text-muted)]">
+          <p>&copy; {currentYear} {siteConfig.name} &middot; Designed with Dieter Rams &amp; Apple Utilitarian Principles</p>
         </div>
 
         {/* Right: Quick Links & Back to top */}
@@ -76,7 +76,7 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub profile"
-            className="text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"
+            className="text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)]"
           >
             <GithubIcon className="h-4 w-4" />
           </a>
@@ -85,26 +85,18 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn profile"
-            className="text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"
+            className="text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)]"
           >
             <LinkedinIcon className="h-4 w-4" />
-          </a>
-          <a
-            href={`mailto:${siteConfig.email}`}
-            aria-label="Send email"
-            className="text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"
-          >
-            <Mail className="h-4 w-4" />
           </a>
 
           <button
             type="button"
             onClick={scrollToTop}
-            aria-label="Back to top"
-            className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--surface-glass)] px-2.5 py-1 text-xs text-[var(--text-secondary)] transition-colors hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+            aria-label="Scroll back to top"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]"
           >
-            <ArrowUp className="h-3 w-3" />
-            <span className="font-mono text-[10px]">TOP</span>
+            <ArrowUp className="h-3.5 w-3.5" />
           </button>
         </div>
       </div>

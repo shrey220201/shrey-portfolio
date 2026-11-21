@@ -12,7 +12,6 @@ export function Intersection() {
       title: "Enterprise Infrastructure",
       subtitle: "The Physical & Systems Foundation",
       icon: Server,
-      accentColor: "var(--accent)",
       badge: "Production Hardened",
       description:
         "QNAP NAS/SAN, RAID (0/1/5/6/10/50/60), NAKIVO, Veeam, VMware vSphere, Hyper-V, Proxmox, Active Directory, and CCNA-level networking.",
@@ -21,6 +20,7 @@ export function Intersection() {
         "Managing multi-server backup jobs with strict RTO/RPO SLAs",
         "Diagnosing live hypervisor and Linux storage bottlenecks via SSH",
       ],
+      specs: "ZFS · RAID 60 · iSCSI · 10GbE SFP+ · VMware ESXi 8.0",
     },
     {
       id: "ai",
@@ -28,7 +28,6 @@ export function Intersection() {
       title: "Applied AI & Automation",
       subtitle: "Modern Agentic & LLM Engineering",
       icon: Cpu,
-      accentColor: "var(--accent-2)",
       badge: "Autonomous Systems",
       description:
         "RAG pipelines, LangGraph cyclic agents, QLoRA fine-tuning, RAGAS evaluation, n8n, and Microsoft Power Automate.",
@@ -37,6 +36,7 @@ export function Intersection() {
         "Designing confidence-gated agentic state machines with human-in-the-loop triggers",
         "Building quantitative evaluation harnesses for faithfulness and retrieval precision",
       ],
+      specs: "LangGraph · Modal GPUs · 4-bit NF4 · RAGAS · ChromaDB",
     },
     {
       id: "intersection",
@@ -44,32 +44,32 @@ export function Intersection() {
       title: "Infrastructure-Aware AI",
       subtitle: "The Fusion of Both Disciplines",
       icon: ShieldCheck,
-      accentColor: "var(--accent-2)",
       badge: "The Competitive Advantage",
       description:
-        "AI systems grounded in real enterprise runbooks, gated by confidence, and escalated to a human before anything destructive runs.",
+        "AI systems grounded in real enterprise runbooks, gated by confidence, and escalated to a human engineer before anything destructive executes.",
       details: [
         "AI agents that understand hypervisor constraints, RAID risks, and network topologies",
         "Deterministic guardrails preventing unvetted CLI execution on production servers",
-        "Closing adversarial prompt injection vectors before agents touch critical systems",
+        "Zero hallucinated commands against production storage arrays and backup targets",
       ],
+      specs: "p >= 0.85 Confidence Gate · Deterministic CLI Sandbox",
     },
   ];
 
   return (
     <section
       id="intersection"
-      className="relative w-full py-12 md:py-16 px-6 border-t border-[var(--border)]/60"
+      className="relative w-full py-16 px-6 border-t border-[var(--border)]"
     >
-      <div className="mx-auto max-w-[1200px]">
+      <div className="mx-auto max-w-[1240px]">
         {/* Section Header */}
-        <div className="mb-8 max-w-[760px]">
-          <p className="eyebrow mb-3">CORE PHILOSOPHY</p>
-          <h2 className="text-3xl font-semibold tracking-[-0.03em] sm:text-4xl md:text-5xl text-[var(--text-primary)]">
+        <div className="mb-10 max-w-[760px]">
+          <p className="eyebrow mb-2">CORE ARCHITECTURAL PHILOSOPHY</p>
+          <h2 className="text-3xl font-bold tracking-[-0.035em] sm:text-4xl md:text-5xl text-[var(--text-primary)]">
             The Intersection.
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed">
-            Most AI engineers have never racked a server or debugged a RAID volume. Most infrastructure engineers have never built a guarded LangGraph agent. <strong className="text-[var(--text-primary)] font-medium">Shrey bridges both.</strong>
+          <p className="mt-3 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+            Most AI engineers have never racked a server or recovered a degraded RAID-60 volume. Most infrastructure engineers have never built a cyclic LangGraph state machine. <strong className="text-[var(--text-primary)] font-semibold">I bridge both domains.</strong>
           </p>
         </div>
 
@@ -82,23 +82,23 @@ export function Intersection() {
             return (
               <GlassCard
                 key={step.id}
-                className={`flex flex-col justify-between transition-all duration-300 hover:scale-[1.01] hover:border-[var(--accent)] hover:shadow-xl ${
+                glow={isHighlighted ? "accent" : "none"}
+                className={`flex flex-col justify-between ${
                   isHighlighted
-                    ? "border-[var(--accent-2)]/40 bg-gradient-to-b from-[var(--surface-glass)] to-[var(--accent-2)]/5 ring-1 ring-[var(--accent-2)]/20"
-                    : "border-[var(--border)]"
+                    ? "border-[var(--accent)]/40 bg-[var(--bg-elevated)]"
+                    : "border-[var(--border)] bg-[var(--bg-elevated)]"
                 }`}
-                glow={isHighlighted ? "ai" : "none"}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
-                      STEP {step.number}
+                  <div className="flex items-center justify-between mb-5">
+                    <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+                      DISCIPLINE {step.number}
                     </span>
                     <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-mono text-[11px] font-medium ${
+                      className={`inline-flex items-center rounded-md px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider ${
                         isHighlighted
-                          ? "bg-[var(--accent-2)]/10 text-[var(--accent-2)] border border-[var(--accent-2)]/30"
-                          : "bg-[var(--surface-glass)] text-[var(--text-secondary)] border border-[var(--border)]"
+                          ? "bg-[var(--accent-muted)] text-[var(--accent)] border border-[var(--accent)]/30"
+                          : "bg-[var(--surface-hover)] text-[var(--text-secondary)] border border-[var(--border)]"
                       }`}
                     >
                       {step.badge}
@@ -106,42 +106,40 @@ export function Intersection() {
                   </div>
 
                   <div className="flex items-center gap-3 mb-4">
-                    <div
-                      className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)]"
-                      style={{ color: step.accentColor }}
-                    >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border-strong)] bg-[var(--bg-card)] text-[var(--accent)]">
                       <Icon className="h-5 w-5" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-[var(--text-primary)]">
+                      <h3 className="text-lg font-bold text-[var(--text-primary)]">
                         {step.title}
                       </h3>
-                      <p className="text-xs text-[var(--text-secondary)] font-mono">
+                      <p className="text-[11px] text-[var(--text-muted)] font-mono">
                         {step.subtitle}
                       </p>
                     </div>
                   </div>
 
-                  <p className="mt-4 text-sm leading-relaxed text-[var(--text-secondary)]">
+                  <p className="mt-3 text-xs sm:text-sm leading-relaxed text-[var(--text-secondary)]">
                     {step.description}
                   </p>
 
-                  <ul className="mt-6 space-y-2.5 border-t border-[var(--border)] pt-6">
+                  <ul className="mt-5 space-y-2 border-t border-[var(--border)] pt-5">
                     {step.details.map((detail, dIdx) => (
                       <li key={dIdx} className="flex items-start gap-2 text-xs text-[var(--text-secondary)]">
-                        <CheckCircle2
-                          className="h-3.5 w-3.5 shrink-0 mt-0.5"
-                          style={{ color: step.accentColor }}
-                        />
+                        <CheckCircle2 className="h-3.5 w-3.5 shrink-0 mt-0.5 text-[var(--accent)]" />
                         <span>{detail}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="mt-8 pt-4 flex items-center justify-between border-t border-[var(--border)] font-mono text-xs text-[var(--text-secondary)]">
-                  <span>{step.id === "intersection" ? "Unified Synthesis" : "Core Pillar"}</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
+                <div className="mt-6 pt-4 border-t border-[var(--border)]">
+                  <div className="font-mono text-[10px] text-[var(--text-muted)] uppercase tracking-wider mb-1">
+                    TECHNOLOGY STACK
+                  </div>
+                  <div className="font-mono text-[11px] text-[var(--text-secondary)] font-medium">
+                    {step.specs}
+                  </div>
                 </div>
               </GlassCard>
             );
@@ -149,26 +147,26 @@ export function Intersection() {
         </div>
 
         {/* Synthesis Banner */}
-        <div className="mt-10 rounded-2xl border border-[var(--border)] bg-[var(--surface-glass)] p-6 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="mt-8 rounded-xl border border-[var(--border-strong)] bg-[var(--bg-elevated)] p-5 flex flex-col md:flex-row items-center justify-between gap-5">
           <div className="flex items-center gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--accent-2)]/10 text-[var(--accent-2)]">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[var(--accent-muted)] text-[var(--accent)] border border-[var(--accent)]/20">
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-[var(--text-primary)]">
-                The Outcome: AI that respects production reality
+              <h4 className="text-sm font-bold text-[var(--text-primary)]">
+                The Practical Outcome: Zero Hallucinated Production Commands
               </h4>
               <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-                Every AI pipeline built with infrastructure-level safeguards, strict evaluation benchmarks, and zero unverified execution.
+                Every AI agent pipeline is bounded by strict confidence thresholds (p &ge; 0.85), deterministic sandboxes, and human-in-the-loop escalation.
               </p>
             </div>
           </div>
           <a
             href="#runbook-copilot"
-            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 font-mono text-xs text-[var(--text-primary)] hover:border-[var(--text-secondary)] hover:bg-[var(--surface-hover)] transition-colors"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2 font-mono text-xs font-semibold text-[var(--text-primary)] hover:border-[var(--accent)] transition-colors"
           >
-            <span>See Flagship Project</span>
-            <ArrowRight className="h-3.5 w-3.5" />
+            <span>Inspect Runbook Copilot</span>
+            <ArrowRight className="h-3.5 w-3.5 text-[var(--accent)]" />
           </a>
         </div>
       </div>
