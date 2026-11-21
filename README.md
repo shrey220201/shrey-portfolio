@@ -155,18 +155,37 @@ RUNBOOK_COPILOT_TOKEN=""
 
 ---
 
-## 7. Deployment to Vercel
+## 7. Deployment Options
 
-The portfolio is designed to deploy to [Vercel](https://vercel.com) with zero server-only incompatibilities.
+### Option A: Cloudflare Workers (Recommended for shreyks.com)
 
-1. Push your repository to GitHub (`github.com/shrey220201/portfolio`).
+The project is optimized for deployment to **Cloudflare Workers** with edge asset delivery, custom domain binding (`shreyks.com`), and an edge worker script:
+
+```bash
+# 1. Login to Cloudflare Wrangler
+npx wrangler login
+
+# 2. Build and deploy directly to Cloudflare Workers
+npm run deploy:cf
+
+# Or preview locally with Cloudflare workerd runtime
+npm run preview:cf
+```
+
+Configuration files:
+* [`wrangler.jsonc`](file:///C:/Users/Shrey/.gemini/antigravity/scratch/shrey-portfolio/wrangler.jsonc) / [`wrangler.toml`](file:///C:/Users/Shrey/.gemini/antigravity/scratch/shrey-portfolio/wrangler.toml)
+* [`worker/index.ts`](file:///C:/Users/Shrey/.gemini/antigravity/scratch/shrey-portfolio/worker/index.ts) (Edge router, security headers & API dispatcher)
+
+### Option B: Deployment to Vercel
+
+1. Push your repository to GitHub (`github.com/shrey220201/shrey-portfolio`).
 2. Log in to [Vercel](https://vercel.com) and click **"Add New Project"**.
 3. Select your GitHub repository.
 4. Framework Preset will auto-detect as **Next.js**.
 5. Under **Environment Variables**, add:
-   * `NEXT_PUBLIC_SITE_URL` (e.g. `https://your-domain.vercel.app`)
-   * `RESEND_API_KEY` (optional, for real email forwarding)
-   * `CONTACT_TO_EMAIL`
+   * `NEXT_PUBLIC_SITE_URL`: `https://shreyks.com`
+   * `RESEND_API_KEY`: *(optional, for contact form)*
+   * `CONTACT_TO_EMAIL`: `Shrey6131@gmail.com`
 6. Click **Deploy**.
 
 ---
