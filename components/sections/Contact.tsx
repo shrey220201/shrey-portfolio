@@ -10,7 +10,7 @@ export function Contact() {
     name: "",
     email: "",
     message: "",
-    honeypot: "",
+    company: "",
   });
 
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -30,7 +30,7 @@ export function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (formData.honeypot) {
+    if (formData.company) {
       setStatus("success");
       return;
     }
@@ -51,19 +51,21 @@ export function Contact() {
           name: formData.name,
           email: formData.email,
           message: formData.message,
-          honeypot: formData.honeypot,
+          company: formData.company,
         }),
       });
 
       const data = await res.json();
       if (res.ok && data.ok) {
         setStatus("success");
-        setFormData({ name: "", email: "", message: "", honeypot: "" });
+        setFormData({ name: "", email: "", message: "", company: "" });
       } else {
-        setStatus("success");
+        setStatus("error");
+        setErrorMessage(data.error || "Could not send message. Please try again.");
       }
     } catch {
-      setStatus("success");
+      setStatus("error");
+      setErrorMessage("Network error. Please check your connection and try again.");
     }
   };
 
@@ -170,18 +172,13 @@ export function Contact() {
           {/* Right Column: Direct Message Terminal (7 cols) */}
           <div className="lg:col-span-7">
             <div className="rounded-2xl border border-[var(--border-strong)] bg-[var(--bg-elevated)] p-6 sm:p-8">
-              <div className="flex items-center justify-between border-b border-[var(--border)] pb-4 mb-6">
-                <div>
-                  <h3 className="text-lg font-bold text-[var(--text-primary)]">
-                    Send Direct Message
-                  </h3>
-                  <p className="text-xs text-[var(--text-muted)] font-mono mt-0.5">
-                    Direct transmission to personal communication pipeline
-                  </p>
-                </div>
-                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase border border-[var(--border)] px-2 py-0.5 rounded">
-                  PORT 443 · TLS
-                </span>
+              <div className="border-b border-[var(--border)] pb-4 mb-6">
+                <h3 className="text-lg font-bold text-[var(--text-primary)]">
+                  Send Direct Message
+                </h3>
+                <p className="text-xs text-[var(--text-muted)] font-mono mt-0.5">
+                  I&apos;ll get back to you soon.
+                </p>
               </div>
 
               {status === "success" ? (
@@ -190,30 +187,34 @@ export function Contact() {
                     <CheckCircle2 className="h-6 w-6" />
                   </div>
                   <h4 className="text-lg font-bold text-[var(--text-primary)]">
-                    Message Dispatched Successfully
+                    Thanks &mdash; I&apos;ll get back to you soon.
                   </h4>
                   <p className="max-w-[380px] text-xs text-[var(--text-secondary)] leading-relaxed">
-                    Thank you! Your dispatch has reached my inbox. I typically review and respond within 24 hours.
+                    Your message has reached my inbox. I typically review and reply within a day.
                   </p>
                   <button
                     type="button"
-                    onClick={() => setStatus("idle")}
-                    className="mt-3 rounded-lg border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2 font-mono text-xs text-[var(--text-primary)] hover:border-[var(--border-strong)]"
+                    onClick={() => {
+                      setStatus("idle");
+                      setErrorMessage("");
+                    }}
+                    className="mt-3 rounded-lg border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2 font-mono text-xs text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors cursor-pointer"
                   >
                     Send Another Message
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  {/* Honeypot field */}
+                  {/* Honeypot anti-spam field */}
                   <input
                     type="text"
-                    name="honeypot"
-                    value={formData.honeypot}
+                    name="company"
+                    value={formData.company}
                     onChange={handleChange}
-                    className="hidden"
+                    className="sr-only opacity-0 absolute pointer-events-none -z-10"
                     tabIndex={-1}
                     autoComplete="off"
+                    aria-hidden="true"
                   />
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -264,20 +265,27 @@ export function Contact() {
                   </div>
 
                   {status === "error" && (
-                    <div className="rounded-lg border border-[var(--danger-led)]/40 bg-[var(--danger-led)]/10 p-3 font-mono text-xs text-[var(--danger-led)]">
-                      {errorMessage}
+                    <div className="flex items-center justify-between rounded-lg border border-[var(--danger-led)]/40 bg-[var(--danger-led)]/10 p-3 font-mono text-xs text-[var(--danger-led)]">
+                      <span>{errorMessage}</span>
+                      <button
+                        type="button"
+                        onClick={() => setStatus("idle")}
+                        className="ml-3 underline hover:opacity-80 font-semibold cursor-pointer shrink-0"
+                      >
+                        Retry
+                      </button>
                     </div>
                   )}
 
                   <button
                     type="submit"
                     disabled={status === "submitting"}
-                    className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[var(--accent)] px-6 font-mono text-xs font-semibold text-white shadow-md transition-all hover:opacity-95 disabled:opacity-50"
+                    className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[var(--accent)] px-6 font-mono text-xs font-semibold text-white shadow-md transition-all hover:opacity-95 disabled:opacity-50 cursor-pointer"
                   >
                     {status === "submitting" ? (
                       <>
                         <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                        <span>Sending...</span>
+                        <span>Sending message...</span>
                       </>
                     ) : (
                       <>

@@ -43,7 +43,7 @@ export const siteConfig: SiteConfig = {
   subline:
     "IT Infrastructure Engineer in Vadodara, India. Backup, storage and virtualisation by day; RAG pipelines and LLM agents built on top of them.",
   location: "Vadodara, Gujarat, India",
-  email: "Shrey6131@gmail.com",
+  email: "shrey.shah@shreyks.com",
   phone: "{{PHONE}}",
   linkedin: "https://www.linkedin.com/in/shrey-shah-5739581a4/",
   github: "https://github.com/shrey220201",

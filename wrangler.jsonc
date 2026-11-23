@@ -16,7 +16,7 @@
   ],
   "vars": {
     "NEXT_PUBLIC_SITE_URL": "https://shreyks.com",
-    "CONTACT_TO_EMAIL": "Shrey6131@gmail.com"
+    "CONTACT_TO_EMAIL": "shrey.shah@shreyks.com"
   },
   "observability": {
     "enabled": true

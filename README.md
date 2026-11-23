@@ -41,7 +41,7 @@ Most AI engineers have never run production infrastructure (racked a server, deb
 shrey-portfolio/
 ├── app/
 │   ├── api/
-│   │   ├── contact/route.ts      # Contact form API with Zod validation & Resend
+│   │   ├── contact/route.ts      # Contact form API with Zod validation & Zoho Mail SMTP (nodemailer)
 │   │   └── chat/route.ts         # Runbook Copilot live demo streaming proxy
 │   ├── projects/[slug]/page.tsx  # Dynamic SSG case study pages
 │   ├── globals.css               # Design tokens, Tailwind v4 imports, glass styling
@@ -137,21 +137,48 @@ Copy `.env.example` to `.env.local` and populate the values:
 
 ```bash
 # Base site URL for sitemaps and OG metadata
-NEXT_PUBLIC_SITE_URL="https://shreyshah.dev"
+NEXT_PUBLIC_SITE_URL="https://shreyks.com"
 
 # Optional public demo link for Runbook Copilot (when live)
 NEXT_PUBLIC_DEMO_URL=""
 
-# Resend API for the Contact Form
-RESEND_API_KEY="re_your_api_key_here"
-CONTACT_TO_EMAIL="Shrey6131@gmail.com"
+# Zoho Mail SMTP via Nodemailer for Contact Form
+SMTP_HOST="smtppro.zoho.in"
+SMTP_PORT="465"
+SMTP_SECURE="true"
+SMTP_USER="shrey.shah@shreyks.com"
+# paste Zoho app password here
+SMTP_PASS=""
+CONTACT_TO_EMAIL="shrey.shah@shreyks.com"
 
 # Runbook Copilot GPU inference backend (Modal / Render)
 RUNBOOK_COPILOT_API_URL=""
 RUNBOOK_COPILOT_TOKEN=""
 ```
 
-*Note: In development mode, if `RESEND_API_KEY` is not set, form submissions are logged cleanly to the server terminal and return 200 OK.*
+### Contact Form / SMTP (Zoho Mail & Nodemailer)
+
+The portfolio contact route (`app/api/contact/route.ts`) delivers visitor messages directly to your Zoho Mail inbox using `nodemailer`:
+
+* **Required Environment Variables**:
+  * `SMTP_HOST`: Zoho professional SMTP server (`smtppro.zoho.in`).
+  * `SMTP_PORT`: `465` (SSL, with `SMTP_SECURE=true`) or `587` (TLS / STARTTLS, with `SMTP_SECURE=false`).
+  * `SMTP_SECURE`: `true` for port 465 (SSL) or `false` for port 587 (TLS).
+  * `SMTP_USER`: Your authenticated Zoho email address (`shrey.shah@shreyks.com`). The outbound `from` header must match this address or Zoho SMTP rejects delivery.
+  * `SMTP_PASS`: Zoho Application-Specific Password.
+    * In **Zoho Mail** → **Settings** → **Mail Accounts** → **IMAP/SMTP** (or Zoho Accounts → Security → App Passwords), generate a dedicated App Password.
+    * Paste it into `SMTP_PASS` in your local `.env.local` file (leave empty in git-committed files).
+  * `CONTACT_TO_EMAIL`: Recipient inbox address (`shrey.shah@shreyks.com`).
+* **Vercel Deployment**:
+  * In [Vercel](https://vercel.com) → **Project** → **Settings** → **Environment Variables**:
+  * Add `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, and `CONTACT_TO_EMAIL` for both **Production** and **Preview** environments.
+  * Trigger a **Redeploy** after saving variables so the serverless runtime picks up the new credentials.
+* **Security & Safeguards**:
+  * Runs on the Node.js runtime (`export const runtime = "nodejs"`).
+  * Honeypot field (`company`) silently drops automated spam submissions.
+  * In-memory sliding rate limiter (5 submissions per 10 minutes per IP).
+  * HTML sanitization (`escapeHtml`) on all user-submitted fields before email formatting.
+  * Passwords and credentials are never logged or exposed to client-side bundles.
 
 ---
 
@@ -184,8 +211,12 @@ Configuration files:
 4. Framework Preset will auto-detect as **Next.js**.
 5. Under **Environment Variables**, add:
    * `NEXT_PUBLIC_SITE_URL`: `https://shreyks.com`
-   * `RESEND_API_KEY`: *(optional, for contact form)*
-   * `CONTACT_TO_EMAIL`: `Shrey6131@gmail.com`
+   * `SMTP_HOST`: `smtppro.zoho.in`
+   * `SMTP_PORT`: `465`
+   * `SMTP_SECURE`: `true`
+   * `SMTP_USER`: `shrey.shah@shreyks.com`
+   * `SMTP_PASS`: *(your Zoho app password)*
+   * `CONTACT_TO_EMAIL`: `shrey.shah@shreyks.com`
 6. Click **Deploy**.
 
 ---

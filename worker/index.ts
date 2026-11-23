@@ -76,7 +76,7 @@ export default {
             },
             body: JSON.stringify({
               from: "Portfolio Contact <onboarding@resend.dev>",
-              to: [env.CONTACT_TO_EMAIL || "Shrey6131@gmail.com"],
+              to: [env.CONTACT_TO_EMAIL || "shrey.shah@shreyks.com"],
               reply_to: email,
               subject: `[Portfolio Inquiry] ${name}`,
               text: `Sender Name: ${name}\nSender Email: ${email}\n\nMessage Content:\n${message}\n\n---\nSent via Cloudflare Worker Edge on shreyks.com`,
