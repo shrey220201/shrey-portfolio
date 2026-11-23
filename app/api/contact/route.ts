@@ -3,6 +3,7 @@ export const runtime = "nodejs";
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { z } from "zod";
+import { checkContactLimits } from "@/lib/ratelimit";
 
 const contactSchema = z.object({
   name: z
@@ -17,31 +18,15 @@ const contactSchema = z.object({
   company: z.string().optional(),
 });
 
-// Simple in-memory rate limiter (max 5 requests per IP per 10 minutes)
-const rateLimitMap = new Map<string, { count: number; expiresAt: number }>();
-
-function checkRateLimit(ip: string): boolean {
-  // Allow localhost testing in development mode
-  if (process.env.NODE_ENV === "development" && (ip === "127.0.0.1" || ip === "::1" || ip === "localhost")) {
-    return true;
+function getClientIp(req: NextRequest): string {
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    const first = forwardedFor.split(",")[0]?.trim();
+    if (first) return first;
   }
-
-  const now = Date.now();
-  const windowMs = 10 * 60 * 1000; // 10 minutes
-  const maxRequests = 5;
-
-  const current = rateLimitMap.get(ip);
-  if (!current || now > current.expiresAt) {
-    rateLimitMap.set(ip, { count: 1, expiresAt: now + windowMs });
-    return true;
-  }
-
-  if (current.count >= maxRequests) {
-    return false;
-  }
-
-  current.count += 1;
-  return true;
+  const realIp = req.headers.get("x-real-ip")?.trim();
+  if (realIp) return realIp;
+  return "unknown";
 }
 
 function escapeHtml(str: string): string {
@@ -55,15 +40,6 @@ function escapeHtml(str: string): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1";
-
-    if (!checkRateLimit(ip)) {
-      return NextResponse.json(
-        { ok: false, error: "Too many requests. Please try again later." },
-        { status: 429 }
-      );
-    }
-
     const body = await req.json();
 
     const validation = contactSchema.safeParse(body);
@@ -79,6 +55,27 @@ export async function POST(req: NextRequest) {
     // Honeypot field check: silently return ok if filled by bot
     if (company && company.trim().length > 0) {
       return NextResponse.json({ ok: true });
+    }
+
+    // Rate limiting check via Upstash Redis (with in-memory fallback)
+    const ip = getClientIp(req);
+    const limitResult = await checkContactLimits(ip, email);
+
+    if (!limitResult.ok) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "rate_limited",
+          retryAfterSeconds: limitResult.retryAfterSeconds,
+          reason: limitResult.reason,
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": limitResult.retryAfterSeconds.toString(),
+          },
+        }
+      );
     }
 
     const host = process.env.SMTP_HOST;

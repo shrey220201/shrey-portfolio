@@ -156,11 +156,25 @@ RUNBOOK_COPILOT_API_URL=""
 RUNBOOK_COPILOT_TOKEN=""
 ```
 
-### Contact Form / SMTP (Zoho Mail & Nodemailer)
+### Contact Form / SMTP & Upstash Redis Rate Limiting
 
-The portfolio contact route (`app/api/contact/route.ts`) delivers visitor messages directly to your Zoho Mail inbox using `nodemailer`:
+The portfolio contact route (`app/api/contact/route.ts`) delivers visitor messages directly to your Zoho Mail inbox using `nodemailer`, guarded by a three-tier sliding-window rate limiter powered by `@upstash/ratelimit` and `@upstash/redis`:
 
-* **Required Environment Variables**:
+* **Three-Tier Rate Limiting Rules**:
+  1. **Per IP**: Max 2 messages per 15 minutes (`contact:ip:<ip>`).
+  2. **Per Sender Email**: Max 2 messages per 15 minutes (`contact:email:<sha256(email)>`), protecting against IP-rotation attacks using the same address.
+  3. **Global Safety Cap**: Max 20 messages per 24 hours across all visitors (`contact:global:all`), protecting your mailbox against distributed multi-IP floods.
+  * All three limits are checked after Zod validation and honeypot checks, but before initializing SMTP dispatch.
+  * SHA-256 hashes are used for email keys so raw email addresses are never stored in Redis.
+  * On limit breaches, the API returns HTTP 429 with a `Retry-After: <seconds>` header and `{ ok: false, error: "rate_limited", retryAfterSeconds, reason }`. The frontend displays a calm inline countdown or LinkedIn alternate contact link.
+
+* **Upstash Redis Configuration (Vercel Storage)**:
+  * In [Vercel](https://vercel.com) → **Storage** → click **Create Database** → select **KV** (powered by Upstash) or **Upstash Redis**.
+  * Link the database to your portfolio project.
+  * Vercel will automatically provide either `KV_REST_API_URL` / `KV_REST_API_TOKEN` or `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` (both naming formats are supported out-of-the-box).
+  * **Graceful Degradation**: If Redis environment variables are missing (e.g. in local development) or Redis encounters an error, the API logs a warning and automatically falls back to an in-memory 2-per-15-minute limiter per IP without crashing.
+
+* **Required SMTP Environment Variables**:
   * `SMTP_HOST`: Zoho professional SMTP server (`smtppro.zoho.in`).
   * `SMTP_PORT`: `465` (SSL, with `SMTP_SECURE=true`) or `587` (TLS / STARTTLS, with `SMTP_SECURE=false`).
   * `SMTP_SECURE`: `true` for port 465 (SSL) or `false` for port 587 (TLS).
@@ -172,11 +186,11 @@ The portfolio contact route (`app/api/contact/route.ts`) delivers visitor messag
 * **Vercel Deployment**:
   * In [Vercel](https://vercel.com) → **Project** → **Settings** → **Environment Variables**:
   * Add `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, and `CONTACT_TO_EMAIL` for both **Production** and **Preview** environments.
+  * Add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` (if not auto-linked via Vercel Storage).
   * Trigger a **Redeploy** after saving variables so the serverless runtime picks up the new credentials.
 * **Security & Safeguards**:
   * Runs on the Node.js runtime (`export const runtime = "nodejs"`).
   * Honeypot field (`company`) silently drops automated spam submissions.
-  * In-memory sliding rate limiter (5 submissions per 10 minutes per IP).
   * HTML sanitization (`escapeHtml`) on all user-submitted fields before email formatting.
   * Passwords and credentials are never logged or exposed to client-side bundles.
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Mail, MapPin, Send, CheckCircle2, ArrowUpRight, Copy, Check } from "lucide-react";
 import { siteConfig } from "@/content/site";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/Footer";
@@ -16,6 +16,30 @@ export function Contact() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [rateLimitState, setRateLimitState] = useState<{
+    isLimited: boolean;
+    reason: "ip" | "email" | "global" | null;
+    secondsRemaining: number;
+  }>({
+    isLimited: false,
+    reason: null,
+    secondsRemaining: 0,
+  });
+
+  useEffect(() => {
+    if (!rateLimitState.isLimited || rateLimitState.secondsRemaining <= 0) return;
+
+    const timer = setInterval(() => {
+      setRateLimitState((prev) => {
+        if (prev.secondsRemaining <= 1) {
+          return { isLimited: false, reason: null, secondsRemaining: 0 };
+        }
+        return { ...prev, secondsRemaining: prev.secondsRemaining - 1 };
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [rateLimitState.isLimited, rateLimitState.secondsRemaining]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -51,6 +75,21 @@ export function Contact() {
       });
 
       const data = await res.json();
+
+      if (res.status === 429 || data.error === "rate_limited") {
+        const seconds =
+          typeof data.retryAfterSeconds === "number" && data.retryAfterSeconds > 0
+            ? data.retryAfterSeconds
+            : 900;
+        setRateLimitState({
+          isLimited: true,
+          reason: data.reason || "ip",
+          secondsRemaining: seconds,
+        });
+        setStatus("idle");
+        return;
+      }
+
       if (res.ok && data.ok) {
         setStatus("success");
         setFormData({ name: "", email: "", message: "", company: "" });
@@ -274,14 +313,18 @@ export function Contact() {
 
                   <button
                     type="submit"
-                    disabled={status === "submitting"}
-                    className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[var(--accent)] px-6 font-mono text-xs font-semibold text-white shadow-md transition-all hover:opacity-95 disabled:opacity-50 cursor-pointer"
+                    disabled={status === "submitting" || rateLimitState.isLimited}
+                    className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[var(--accent)] px-6 font-mono text-xs font-semibold text-white shadow-md transition-all hover:opacity-95 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                   >
                     {status === "submitting" ? (
                       <>
                         <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                         <span>Sending message...</span>
                       </>
+                    ) : rateLimitState.isLimited ? (
+                      <span>
+                        Cooldown active ({Math.floor(rateLimitState.secondsRemaining / 60)}:{(rateLimitState.secondsRemaining % 60).toString().padStart(2, "0")})
+                      </span>
                     ) : (
                       <>
                         <Send className="h-3.5 w-3.5" />
@@ -289,6 +332,34 @@ export function Contact() {
                       </>
                     )}
                   </button>
+
+                  {/* Calm inline rate-limit message */}
+                  {rateLimitState.isLimited && (
+                    rateLimitState.reason === "global" ? (
+                      <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 font-mono text-xs text-amber-200/90 leading-relaxed">
+                        <span>I&apos;m receiving a lot of messages right now — please try again later or reach me on </span>
+                        <a
+                          href={siteConfig.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline text-[var(--accent)] hover:opacity-80 font-semibold inline-flex items-center gap-0.5"
+                        >
+                          LinkedIn
+                          <ArrowUpRight className="h-3 w-3 inline" />
+                        </a>
+                        .
+                      </div>
+                    ) : (
+                      <div className="rounded-lg border border-white/10 bg-white/5 p-3 font-mono text-xs text-[var(--text-secondary)] leading-relaxed">
+                        <span>
+                          You&apos;ve sent a couple of messages already — please try again in about {Math.max(1, Math.ceil(rateLimitState.secondsRemaining / 60))} {Math.max(1, Math.ceil(rateLimitState.secondsRemaining / 60)) === 1 ? "minute" : "minutes"}.
+                        </span>
+                        <span className="block mt-1 text-[11px] text-[var(--text-muted)]">
+                          Cooldown remaining: {Math.floor(rateLimitState.secondsRemaining / 60)}:{(rateLimitState.secondsRemaining % 60).toString().padStart(2, "0")}
+                        </span>
+                      </div>
+                    )
+                  )}
                 </form>
               )}
             </div>
