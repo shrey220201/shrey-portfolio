@@ -220,7 +220,7 @@ export function Hero() {
           <span>·</span>
           <span className="text-[var(--text-secondary)]">HYPER-V → PROXMOX</span>
           <span>·</span>
-          <span className="text-[var(--glacier)]">LANGGRAPH p ≥ 0.85</span>
+          <span className="text-[var(--glacier)]">CONFIDENCE-GATED LANGGRAPH</span>
         </div>
 
         <div className="hidden sm:flex items-center gap-2">

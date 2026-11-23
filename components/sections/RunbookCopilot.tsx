@@ -25,10 +25,10 @@ export function RunbookCopilot() {
 
   const nodeDetails: Record<string, { title: string; type: string; role: string; specs: string }> = {
     gate: {
-      title: "Confidence Gate (p ≥ 0.85)",
+      title: "Confidence Gate [Safety Filter]",
       type: "Deterministic Decision Boundary",
-      role: "Evaluates model posterior probability. If score falls below 0.85, routes execution directly to the Human Escalation Node to prevent unverified CLI actions.",
-      specs: "Threshold: 0.85 · Fallback: Escalation Queue · Strict Bypass Prevention",
+      role: "Evaluates retrieval similarity against threshold (CONFIDENCE_THRESHOLD = 0.50). If similarity score falls below threshold, routes execution directly to Human Escalation to prevent unverified CLI actions.",
+      specs: "Threshold: 0.50 (Qdrant Score) · Fallback: Escalation Queue · Strict Bypass Prevention",
     },
     rag: {
       title: "Hybrid Vector RAG Node",

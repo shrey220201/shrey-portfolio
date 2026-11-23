@@ -52,7 +52,7 @@ const SVG_NODES: SvgNode[] = [
   {
     id: "gate",
     label: "Confidence Gate",
-    sublabel: "p ≥ 0.85 Boundary",
+    sublabel: "Safety Filter",
     x: 400,
     y: 170,
     color: "#F15419",

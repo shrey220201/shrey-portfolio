@@ -52,7 +52,7 @@ export function Intersection() {
         "Deterministic guardrails preventing unvetted CLI execution on production servers",
         "Grounded SOP playbooks preventing unverified execution on storage and backup targets",
       ],
-      specs: "p ≥ 0.85 Confidence Gate · Deterministic CLI Sandbox",
+      specs: "Confidence-Gated LangGraph · Deterministic CLI Sandbox",
     },
   ];
 
@@ -154,7 +154,7 @@ export function Intersection() {
                 The Practical Outcome: Grounded Runbooks &amp; Guarded Execution
               </h4>
               <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-                Every AI agent pipeline is bounded by strict confidence thresholds (p ≥ 0.85), deterministic sandboxes, and human-in-the-loop escalation.
+                Every AI agent pipeline is bounded by confidence gates (CONFIDENCE_THRESHOLD = 0.50), deterministic sandboxes, and human-in-the-loop escalation.
               </p>
             </div>
           </div>

@@ -55,7 +55,7 @@ export const GRAPH_NODES: GraphNode[] = [
   {
     id: "gate",
     label: "Confidence Gate",
-    sublabel: "p ≥ 0.85 Boundary",
+    sublabel: "Safety Filter",
     category: "DETERMINISTIC GATE",
     position: [0.5, 0.2, 0.0],
     color: "#F15419",

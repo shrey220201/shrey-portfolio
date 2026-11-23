@@ -186,7 +186,7 @@ export function LiveSystemConsole() {
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-[11px] font-bold text-[var(--accent)]">p &gt;= 0.85 GATE</div>
+                <div className="text-[11px] font-bold text-[var(--accent)]">CONFIDENCE GATE</div>
                 <div className="text-[9px] text-[var(--text-muted)]">95.5% Eval Precision</div>
               </div>
             </div>
@@ -225,7 +225,7 @@ export function LiveSystemConsole() {
                 &gt; RETRIEVER: BM25 + bge-small-en rank fusion retrieved 3 runbooks
               </div>
               <div className="text-[var(--success-led)] pl-3 border-l border-[var(--success-led)]">
-                &gt; CONFIDENCE EVAL: score = 0.942 (&gt;= 0.85 gate approved)
+                &gt; CONFIDENCE EVAL: score = 0.942 (confidence gate approved)
               </div>
               <div className="text-[var(--text-primary)] pl-3 border-l border-[var(--text-primary)]">
                 &gt; ACTION: Re-balanced multipath IO across SFP+ Link B. Latency normalized to 1.1ms.
@@ -274,7 +274,7 @@ export function LiveSystemConsole() {
                   )}
                   {simStep >= 4 && (
                     <div className="text-purple-400 animate-fade-in">
-                      [GATE] Posterior confidence = 0.96 &gt;= 0.85 threshold. Gate passed.
+                      [GATE] Retrieval confidence = 0.96 &gt;= threshold. Gate passed.
                     </div>
                   )}
                   {simStep >= 5 && (

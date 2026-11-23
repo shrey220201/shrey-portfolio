@@ -213,7 +213,7 @@ function SpatialTelemetryTags() {
 
       <Html position={[1.8, -0.9, 0]} center distanceFactor={6}>
         <div className="pointer-events-none select-none rounded-md border border-[#FF2A4D]/40 bg-black/75 px-2 py-0.5 font-mono text-[9px] font-semibold text-white backdrop-blur-md shadow-lg shadow-[#FF2A4D]/20 whitespace-nowrap">
-          <span className="text-[#30D158] font-bold">●</span> CONFIDENCE: p ≥ 0.85
+          <span className="text-[#30D158] font-bold">●</span> CONFIDENCE-GATED
         </div>
       </Html>
 
