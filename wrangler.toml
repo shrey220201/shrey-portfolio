@@ -20,6 +20,10 @@ custom_domain = true
 [vars]
 NEXT_PUBLIC_SITE_URL = "https://shreyks.com"
 CONTACT_TO_EMAIL = "shrey.shah@shreyks.com"
+SMTP_HOST = "smtppro.zoho.in"
+SMTP_PORT = "465"
+SMTP_SECURE = "true"
+SMTP_USER = "shrey.shah@shreyks.com"
 
 [observability]
 enabled = true

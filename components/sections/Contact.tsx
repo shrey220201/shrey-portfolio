@@ -30,11 +30,6 @@ export function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (formData.company) {
-      setStatus("success");
-      return;
-    }
-
     if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
       setStatus("error");
       setErrorMessage("Please fill in all required fields.");
@@ -206,16 +201,16 @@ export function Contact() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Honeypot anti-spam field */}
-                  <input
-                    type="text"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleChange}
-                    className="sr-only opacity-0 absolute pointer-events-none -z-10"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    aria-hidden="true"
-                  />
+                  <div style={{ display: "none" }} aria-hidden="true">
+                    <input
+                      type="text"
+                      name="company"
+                      value={formData.company}
+                      onChange={handleChange}
+                      tabIndex={-1}
+                      autoComplete="new-password"
+                    />
+                  </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>

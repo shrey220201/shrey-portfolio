@@ -21,6 +21,11 @@ const contactSchema = z.object({
 const rateLimitMap = new Map<string, { count: number; expiresAt: number }>();
 
 function checkRateLimit(ip: string): boolean {
+  // Allow localhost testing in development mode
+  if (process.env.NODE_ENV === "development" && (ip === "127.0.0.1" || ip === "::1" || ip === "localhost")) {
+    return true;
+  }
+
   const now = Date.now();
   const windowMs = 10 * 60 * 1000; // 10 minutes
   const maxRequests = 5;

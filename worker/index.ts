@@ -3,12 +3,19 @@
  * Handles edge asset delivery, custom domain routing, API proxying, and security headers.
  */
 
+import { WorkerMailer } from "worker-mailer";
+
 export interface Env {
   ASSETS: {
     fetch: (request: Request | string) => Promise<Response>;
   };
-  RESEND_API_KEY?: string;
+  SMTP_HOST?: string;
+  SMTP_PORT?: string;
+  SMTP_SECURE?: string;
+  SMTP_USER?: string;
+  SMTP_PASS?: string;
   CONTACT_TO_EMAIL?: string;
+  RESEND_API_KEY?: string;
   RUNBOOK_COPILOT_API_URL?: string;
   RUNBOOK_COPILOT_TOKEN?: string;
   NEXT_PUBLIC_SITE_URL?: string;
@@ -40,13 +47,14 @@ export default {
           name?: string;
           email?: string;
           message?: string;
+          company?: string;
           honeypot?: string;
         };
 
-        const { name, email, message, honeypot } = body;
+        const { name, email, message, company, honeypot } = body;
 
-        // Anti-bot Honeypot validation
-        if (honeypot) {
+        // Anti-bot Honeypot validation (company or legacy honeypot)
+        if ((company && company.trim().length > 0) || (honeypot && honeypot.trim().length > 0)) {
           return Response.json({ ok: true, message: "Transmission received" });
         }
 
@@ -66,7 +74,69 @@ export default {
           );
         }
 
-        // If Resend API key is configured in Cloudflare environment
+        // 1. Primary: Zoho Mail SMTP via WorkerMailer (Cloudflare TCP Sockets)
+        if (env.SMTP_USER && env.SMTP_PASS) {
+          const mailer = await WorkerMailer.connect({
+            host: env.SMTP_HOST || "smtppro.zoho.in",
+            port: Number(env.SMTP_PORT) || 465,
+            secure: env.SMTP_SECURE !== "false",
+            authType: "login",
+            credentials: {
+              username: env.SMTP_USER,
+              password: env.SMTP_PASS,
+            },
+          });
+
+          const safeName = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          const safeEmail = email.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          const safeMessage = message
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\n/g, "<br/>");
+
+          const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: #111; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <div style="border-bottom: 2px solid #F15419; padding-bottom: 12px; margin-bottom: 20px;">
+    <h2 style="margin: 0; font-size: 20px; color: #111;">New Portfolio Contact Message</h2>
+    <p style="margin: 4px 0 0; font-size: 13px; color: #666;">Received via shreyks.com</p>
+  </div>
+  <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px;">
+    <tr><td style="padding: 6px 0; width: 80px; font-weight: bold; color: #555;">From:</td><td>${safeName}</td></tr>
+    <tr><td style="padding: 6px 0; width: 80px; font-weight: bold; color: #555;">Email:</td><td><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>
+  </table>
+  <div style="padding: 16px; background-color: #f7f7f8; border-left: 4px solid #F15419; border-radius: 4px; font-size: 14px;">
+    <div style="font-weight: bold; margin-bottom: 8px; color: #333;">Message:</div>
+    <div>${safeMessage}</div>
+  </div>
+</body>
+</html>
+          `.trim();
+
+          await mailer.send({
+            from: {
+              name: "Portfolio Contact",
+              email: env.SMTP_USER,
+            },
+            to: {
+              name: "Shrey Shah",
+              email: env.CONTACT_TO_EMAIL || env.SMTP_USER,
+            },
+            reply: {
+              name,
+              email,
+            },
+            subject: `New message from ${name} — shreyks.com`,
+            text: `New message from ${name} (${email}):\n\n${message}\n\n---\nSent from portfolio contact form (shreyks.com)`,
+            html: htmlContent,
+          });
+
+          return Response.json({ ok: true });
+        }
+
+        // 2. Secondary Fallback: Resend API if configured
         if (env.RESEND_API_KEY) {
           const resendResponse = await fetch("https://api.resend.com/emails", {
             method: "POST",
@@ -86,15 +156,15 @@ export default {
           if (!resendResponse.ok) {
             console.error("Resend API failed:", await resendResponse.text());
           }
+          return Response.json({ ok: true });
         }
 
-        return Response.json({
-          ok: true,
-          message: "Transmission dispatched successfully to Shrey Shah.",
-        });
+        console.warn("No mail delivery provider configured on edge worker.");
+        return Response.json({ ok: false, error: "Email not configured" }, { status: 500 });
       } catch (err: unknown) {
         const errorMsg = err instanceof Error ? err.message : "Internal Error";
-        return Response.json({ ok: false, error: errorMsg }, { status: 500 });
+        console.error("Contact worker error:", errorMsg);
+        return Response.json({ ok: false, error: "Could not send message" }, { status: 500 });
       }
     }
 
