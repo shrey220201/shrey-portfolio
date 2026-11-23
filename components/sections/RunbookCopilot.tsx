@@ -15,22 +15,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { GithubIcon } from "@/components/ui/Footer";
 import { Reveal } from "@/components/motion/Reveal";
 import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
-
-const DynamicAgentGraph = dynamic(
-  () => import("@/components/three/AgentGraph").then((m) => m.AgentGraph),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-56 w-full flex-col items-center justify-center p-6 text-center">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-[var(--border)] border-t-[var(--accent)]" />
-        <span className="mt-2 font-mono text-[11px] text-[var(--text-muted)]">
-          MOUNTING AGENT GRAPH 3D...
-        </span>
-      </div>
-    ),
-  }
-);
+import { AgentGraphViewer } from "@/components/sections/AgentGraphViewer";
 
 export function RunbookCopilot() {
   const project = projects.find((p) => p.slug === "runbook-copilot");
@@ -40,7 +25,7 @@ export function RunbookCopilot() {
 
   const nodeDetails: Record<string, { title: string; type: string; role: string; specs: string }> = {
     gate: {
-      title: "Confidence Gate (p >= 0.85)",
+      title: "Confidence Gate (p ≥ 0.85)",
       type: "Deterministic Decision Boundary",
       role: "Evaluates model posterior probability. If score falls below 0.85, routes execution directly to the Human Escalation Node to prevent unverified CLI actions.",
       specs: "Threshold: 0.85 · Fallback: Escalation Queue · Strict Bypass Prevention",
@@ -232,9 +217,9 @@ export function RunbookCopilot() {
                   <span className="text-[var(--text-muted)]">LANGGRAPH 3D</span>
                 </div>
 
-                {/* 3D Canvas */}
+                {/* 3D Canvas / SVG Fallback */}
                 <div className="relative h-72 sm:h-80 w-full rounded-xl overflow-hidden bg-[var(--bg)] border border-[var(--border)]">
-                  <DynamicAgentGraph
+                  <AgentGraphViewer
                     className="h-full w-full"
                     selectedId={selectedNode}
                     onNodeChange={(id) => setSelectedNode(id)}

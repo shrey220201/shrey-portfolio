@@ -44,7 +44,7 @@ export const projects: Project[] = [
     ],
     summary:
       "A retrieval-augmented, confidence-gated agentic system built for infrastructure incident triage over real Windows Server, Active Directory, Hyper-V, and Proxmox documentation. Grounds remediation guidance in verified enterprise sources instead of raw model recall.",
-    githubUrl: "{{RUNBOOK_COPILOT_REPO_URL}}",
+    githubUrl: "<PASTE GITHUB REPO URL>",
     demoUrl: process.env.NEXT_PUBLIC_DEMO_URL,
     has3dModel: "agentGraph",
     problem: [

@@ -16,7 +16,7 @@ export default function HomePage() {
   const exploreCards = [
     {
       title: "Projects & Architectures",
-      tagline: "7 Production Case Studies",
+      tagline: "Case Studies",
       description:
         "Multi-bay QNAP SAN/NAS arrays, dual-region enterprise capstone, hybrid RAG pipelines, and QLoRA fine-tuning.",
       href: "/projects",

@@ -59,7 +59,7 @@ export const siteConfig: SiteConfig = {
     enableTerminal: true,
   },
   placeholders: {
-    runbookCopilotRepoUrl: "{{RUNBOOK_COPILOT_REPO_URL}}",
+    runbookCopilotRepoUrl: "<PASTE GITHUB REPO URL>",
     profilePhoto: "{{PROFILE_PHOTO}}",
     demoUrl: process.env.NEXT_PUBLIC_DEMO_URL || "",
   },

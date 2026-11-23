@@ -71,20 +71,19 @@ export function Hero() {
               <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-8">
                 <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elevated)]/85 px-3.5 py-1.5 font-mono text-xs backdrop-blur-md shadow-sm">
                   <HardDrive className="h-3.5 w-3.5 text-[var(--accent)]" />
-                  <span className="font-bold text-[var(--text-primary)]">200TB+</span>
-                  <span className="text-[var(--text-secondary)]">Enterprise ZFS Fleet</span>
+                  <span className="font-bold text-[var(--text-primary)]">10+</span>
+                  <span className="text-[var(--text-secondary)]">QNAP sites</span>
                 </div>
 
                 <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elevated)]/85 px-3.5 py-1.5 font-mono text-xs backdrop-blur-md shadow-sm">
                   <Server className="h-3.5 w-3.5 text-[var(--glacier)]" />
-                  <span className="font-bold text-[var(--text-primary)]">ESXi &amp; Proxmox</span>
-                  <span className="text-[var(--text-secondary)]">HA Virtualization</span>
+                  <span className="font-bold text-[var(--text-primary)]">Hyper-V → Proxmox migrations</span>
                 </div>
 
                 <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elevated)]/85 px-3.5 py-1.5 font-mono text-xs backdrop-blur-md shadow-sm">
                   <Cpu className="h-3.5 w-3.5 text-[var(--accent)]" />
                   <span className="font-bold text-[var(--text-primary)]">95.5%</span>
-                  <span className="text-[var(--text-secondary)]">Modal QLoRA Eval</span>
+                  <span className="text-[var(--text-secondary)]">QLoRA eval</span>
                 </div>
               </div>
             </Reveal>
@@ -207,11 +206,11 @@ export function Hero() {
       {/* Bottom Bar: Ambient Indicators */}
       <div className="mx-auto w-full max-w-[1300px] flex items-center justify-between border-t border-[var(--border)] pt-4 font-mono text-[10px] text-[var(--text-muted)]">
         <div className="flex items-center gap-3">
-          <span className="text-[var(--text-secondary)]">BARE-METAL ZFS</span>
+          <span className="text-[var(--text-secondary)]">10+ QNAP SITES</span>
           <span>·</span>
-          <span className="text-[var(--text-secondary)]">VMWARE ESXI 8.0</span>
+          <span className="text-[var(--text-secondary)]">HYPER-V → PROXMOX</span>
           <span>·</span>
-          <span className="text-[var(--glacier)]">LANGGRAPH p &ge; 0.85</span>
+          <span className="text-[var(--glacier)]">LANGGRAPH p ≥ 0.85</span>
         </div>
 
         <div className="hidden sm:flex items-center gap-2">

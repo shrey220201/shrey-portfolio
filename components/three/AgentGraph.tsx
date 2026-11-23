@@ -55,7 +55,7 @@ export const GRAPH_NODES: GraphNode[] = [
   {
     id: "gate",
     label: "Confidence Gate",
-    sublabel: "p >= 0.85 Boundary",
+    sublabel: "p ≥ 0.85 Boundary",
     category: "DETERMINISTIC GATE",
     position: [0.5, 0.2, 0.0],
     color: "#F15419",
@@ -282,6 +282,18 @@ function FlowEdgesAndPulses({ activeNodeId }: { activeNodeId: string }) {
     });
   }, []);
 
+  // Precompute lines
+  const lineObjects = useMemo(() => {
+    return splines.map((s) => {
+      const mat = new THREE.LineBasicMaterial({
+        color: 0x77e7fe,
+        transparent: true,
+        opacity: 0.22,
+      });
+      return new THREE.Line(s.geometry, mat);
+    });
+  }, [splines]);
+
   // Multi-packet animations
   const packetGroupRef = useRef<THREE.Group>(null);
   const packetRefs = useRef<(THREE.Mesh | null)[]>([]);
@@ -307,19 +319,13 @@ function FlowEdgesAndPulses({ activeNodeId }: { activeNodeId: string }) {
         const isConnected =
           GRAPH_NODES[s.srcIdx].id === activeNodeId ||
           GRAPH_NODES[s.dstIdx].id === activeNodeId;
+        const line = lineObjects[idx];
+        if (line) {
+          (line.material as THREE.LineBasicMaterial).color.setHex(isConnected ? 0xf15419 : 0x77e7fe);
+          (line.material as THREE.LineBasicMaterial).opacity = isConnected ? 0.65 : 0.22;
+        }
 
-        return (
-          <line key={idx}>
-            <bufferGeometry attach="geometry" {...s.geometry} />
-            <lineBasicMaterial
-              attach="material"
-              color={isConnected ? 0xf15419 : 0x77e7fe}
-              transparent
-              opacity={isConnected ? 0.65 : 0.22}
-              linewidth={1}
-            />
-          </line>
-        );
+        return <primitive key={idx} object={line} />;
       })}
 
       {/* Traveling Glowing Data Packets */}

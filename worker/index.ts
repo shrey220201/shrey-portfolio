@@ -19,6 +19,19 @@ export default {
     const url = new URL(request.url);
 
     // --------------------------------------------------------------------------
+    // 0. Canonical Edge Redirection: HTTP -> HTTPS and www.* -> bare domain
+    // --------------------------------------------------------------------------
+    const isHttp = url.protocol === "http:";
+    const isWww = url.hostname.startsWith("www.");
+    const isLocalhost = url.hostname === "localhost" || url.hostname === "127.0.0.1";
+
+    if (!isLocalhost && (isHttp || isWww)) {
+      const canonicalHostname = url.hostname.replace(/^www\./, "");
+      const canonicalUrl = `https://${canonicalHostname}${url.pathname}${url.search}`;
+      return Response.redirect(canonicalUrl, 301);
+    }
+
+    // --------------------------------------------------------------------------
     // 1. API Route: Contact Form Dispatcher (/api/contact)
     // --------------------------------------------------------------------------
     if (url.pathname === "/api/contact" && request.method === "POST") {

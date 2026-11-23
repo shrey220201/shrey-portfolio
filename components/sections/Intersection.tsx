@@ -50,9 +50,9 @@ export function Intersection() {
       details: [
         "AI agents that understand hypervisor constraints, RAID risks, and network topologies",
         "Deterministic guardrails preventing unvetted CLI execution on production servers",
-        "Zero hallucinated commands against production storage arrays and backup targets",
+        "Grounded SOP playbooks preventing unverified execution on storage and backup targets",
       ],
-      specs: "p >= 0.85 Confidence Gate · Deterministic CLI Sandbox",
+      specs: "p ≥ 0.85 Confidence Gate · Deterministic CLI Sandbox",
     },
   ];
 
@@ -151,10 +151,10 @@ export function Intersection() {
             </div>
             <div>
               <h4 className="text-sm font-bold text-[var(--text-primary)]">
-                The Practical Outcome: Zero Hallucinated Production Commands
+                The Practical Outcome: Grounded Runbooks &amp; Guarded Execution
               </h4>
               <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-                Every AI agent pipeline is bounded by strict confidence thresholds (p &ge; 0.85), deterministic sandboxes, and human-in-the-loop escalation.
+                Every AI agent pipeline is bounded by strict confidence thresholds (p ≥ 0.85), deterministic sandboxes, and human-in-the-loop escalation.
               </p>
             </div>
           </div>

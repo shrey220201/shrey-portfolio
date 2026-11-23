@@ -41,11 +41,7 @@ export function Stats() {
                   {stat.label}
                 </div>
                 <div className="mt-0.5 text-[11px] text-[var(--text-muted)] leading-tight">
-                  {idx === 0 && "Across QNAP & ZFS enterprise pools"}
-                  {idx === 1 && "High-availability virtualization cluster"}
-                  {idx === 2 && "QLoRA Llama 3.2 1B NF4 on Modal"}
-                  {idx === 3 && "Recovery Time Objective (RTO) SLA"}
-                  {idx === 4 && "Critical SSH bare-metal root causes"}
+                  {stat.description}
                 </div>
               </div>
             </Reveal>

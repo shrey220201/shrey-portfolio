@@ -133,7 +133,7 @@ export function Contact() {
               <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 font-mono text-xs text-[var(--text-secondary)]">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="h-2 w-2 rounded-full bg-[var(--success-led)] animate-pulse" />
-                  <span className="font-semibold text-[var(--text-primary)]">SLA: Under 24h response</span>
+                  <span className="font-semibold text-[var(--text-primary)]">Usually replies within a day</span>
                 </div>
                 <p className="text-[11px] text-[var(--text-muted)]">
                   Open for infrastructure engineering, AI engineering, and technical systems roles.
@@ -277,12 +277,12 @@ export function Contact() {
                     {status === "submitting" ? (
                       <>
                         <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                        <span>DISPATCHING...</span>
+                        <span>Sending...</span>
                       </>
                     ) : (
                       <>
                         <Send className="h-3.5 w-3.5" />
-                        <span>TRANSMIT DISPATCH</span>
+                        <span>Send message</span>
                       </>
                     )}
                   </button>

@@ -60,7 +60,7 @@ export function Footer() {
               className="inline-block h-2 w-2 rounded-full bg-[var(--success-led)] shadow-[0_0_8px_var(--success-led)] animate-pulse"
               aria-hidden="true"
             />
-            <span>SYSTEM: ALL NODES OPERATIONAL · 99.98% UPTIME</span>
+            <span>All systems operational</span>
           </div>
         </div>
 
