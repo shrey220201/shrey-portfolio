@@ -63,9 +63,10 @@ export function FlowingWaveBackground() {
 
     const initEmbers = () => {
       embers = [];
-      const count = Math.min(Math.floor((width * height) / 14000), 105);
+      const count = Math.min(Math.floor((width * height) / 13000), 110);
       for (let i = 0; i < count; i++) {
-        const isGlacier = Math.random() < 0.22;
+        // Balanced mix of glacier blue & blaze orange embers
+        const isGlacier = Math.random() < 0.42;
         const baseAlpha = 0.25 + Math.random() * 0.55;
         embers.push({
           x: Math.random() * width,
@@ -84,7 +85,7 @@ export function FlowingWaveBackground() {
     initEmbers();
 
     // Wave Mesh Configuration
-    const cols = 55;
+    const cols = 56;
     const rows = 36;
     let time = 0;
 
@@ -98,7 +99,7 @@ export function FlowingWaveBackground() {
 
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Draw Rising Embers
+      // 1. Draw Rising Embers (Dual Blaze Orange & Glacier Blue)
       for (let i = 0; i < embers.length; i++) {
         const emb = embers[i];
         emb.x += emb.vx;
@@ -117,10 +118,9 @@ export function FlowingWaveBackground() {
         const alphaVal = Math.max(0, Math.min(1, emb.alpha));
         if (isDark) {
           ctx.fillStyle = emb.isGlacier
-            ? `rgba(119, 231, 254, ${alphaVal})`
+            ? `rgba(119, 231, 254, ${alphaVal * 0.9})`
             : `rgba(241, 84, 25, ${alphaVal})`;
         } else {
-          // Deeper contrast for light background
           ctx.fillStyle = emb.isGlacier
             ? `rgba(0, 153, 191, ${alphaVal * 0.85})`
             : `rgba(225, 75, 20, ${alphaVal * 0.85})`;
@@ -131,10 +131,30 @@ export function FlowingWaveBackground() {
         ctx.fill();
       }
 
-      // 2. 3D Perspective Undulating Particle Wave Surface
+      // 2. 3D Perspective Undulating Particle Wave Surface with Smooth Orange <-> Glacier Blue Blend
       const fov = 420;
       const waveCenterY = height * 0.68;
       const mouseOffsetFactor = (mouse.x / width - 0.5) * 120;
+
+      // Master continuous linear gradient across the wave horizon
+      // Oscillating color stop phase for an organic liquid light flow
+      const phase = Math.sin(time * 0.5) * 0.08;
+      const waveGradient = ctx.createLinearGradient(0, 0, width, 0);
+
+      if (isDark) {
+        // Blaze Orange -> Vibrant Glacier Blue -> Deep Glacier -> Blaze Orange
+        waveGradient.addColorStop(0.0, "rgba(241, 84, 25, 0.9)");
+        waveGradient.addColorStop(Math.max(0.05, 0.26 - phase), "rgba(245, 115, 45, 0.95)");
+        waveGradient.addColorStop(Math.min(0.95, 0.52 + phase), "rgba(119, 231, 254, 1.0)");
+        waveGradient.addColorStop(Math.min(0.98, 0.76 + phase), "rgba(90, 215, 250, 0.95)");
+        waveGradient.addColorStop(1.0, "rgba(241, 84, 25, 0.85)");
+      } else {
+        waveGradient.addColorStop(0.0, "rgba(225, 75, 20, 0.9)");
+        waveGradient.addColorStop(Math.max(0.05, 0.26 - phase), "rgba(235, 100, 35, 0.95)");
+        waveGradient.addColorStop(Math.min(0.95, 0.52 + phase), "rgba(0, 153, 191, 1.0)");
+        waveGradient.addColorStop(Math.min(0.98, 0.76 + phase), "rgba(0, 175, 220, 0.95)");
+        waveGradient.addColorStop(1.0, "rgba(225, 75, 20, 0.85)");
+      }
 
       for (let r = rows - 1; r >= 0; r--) {
         const depth = 280 + r * 22;
@@ -167,35 +187,40 @@ export function FlowingWaveBackground() {
             ctx.lineTo(screenX, screenY);
           }
 
-          // Luminous node points along wave filaments
+          // Luminous node points along wave filaments with smooth dynamic color blend
           if (c % 2 === 0 && r % 2 === 0) {
-            const isRidge = yElevation > 15;
-            const ptAlpha = Math.max(0.08, zFactor * (isRidge ? 0.75 : 0.35));
-            const ptRadius = Math.max(0.6, scale * (isRidge ? 2.4 : 1.3));
+            const isRidge = yElevation > 14;
+            const ptAlpha = Math.max(0.12, zFactor * (isRidge ? 0.85 : 0.42));
+            const ptRadius = Math.max(0.65, scale * (isRidge ? 2.5 : 1.35));
 
-            const isGlacierPoint = (c * 7 + r * 13) % 17 === 0;
+            // Smooth color interpolation between Blaze Orange and Glacier Blue based on position & ridge height
+            // Center-right crests and elevated peaks shine in Glacier Blue
+            const waveBlend = Math.sin(u * Math.PI + Math.cos(r * 0.18 + time * 0.6) * 0.6);
+            const glacierWeight = Math.max(0, Math.min(1, waveBlend * 0.82 + (isRidge ? 0.35 : 0)));
 
             if (isDark) {
-              ctx.fillStyle = isGlacierPoint
-                ? `rgba(119, 231, 254, ${ptAlpha * 1.2})`
-                : `rgba(241, 84, 25, ${ptAlpha})`;
+              const red = Math.round(241 * (1 - glacierWeight) + 119 * glacierWeight);
+              const green = Math.round(84 * (1 - glacierWeight) + 231 * glacierWeight);
+              const blue = Math.round(25 * (1 - glacierWeight) + 254 * glacierWeight);
+              ctx.fillStyle = `rgba(${red}, ${green}, ${blue}, ${ptAlpha})`;
             } else {
-              ctx.fillStyle = isGlacierPoint
-                ? `rgba(0, 153, 191, ${ptAlpha * 1.1})`
-                : `rgba(225, 75, 20, ${ptAlpha * 1.1})`;
+              const red = Math.round(225 * (1 - glacierWeight) + 0 * glacierWeight);
+              const green = Math.round(75 * (1 - glacierWeight) + 153 * glacierWeight);
+              const blue = Math.round(20 * (1 - glacierWeight) + 191 * glacierWeight);
+              ctx.fillStyle = `rgba(${red}, ${green}, ${blue}, ${ptAlpha * 0.95})`;
             }
 
             ctx.fillRect(screenX - ptRadius / 2, screenY - ptRadius / 2, ptRadius, ptRadius);
           }
         }
 
-        // Filament line styling
-        const lineAlpha = zFactor * (isDark ? 0.18 : 0.25);
-        ctx.strokeStyle = isDark
-          ? `rgba(241, 84, 25, ${lineAlpha})`
-          : `rgba(225, 75, 20, ${lineAlpha})`;
-        ctx.lineWidth = Math.max(0.6, scale * 1.5);
+        // Filament line stroke with smooth alpha and master wave gradient
+        ctx.save();
+        ctx.globalAlpha = zFactor * (isDark ? 0.32 : 0.4);
+        ctx.strokeStyle = waveGradient;
+        ctx.lineWidth = Math.max(0.65, scale * 1.55);
         ctx.stroke();
+        ctx.restore();
       }
 
       animationFrameId = requestAnimationFrame(render);
@@ -212,15 +237,23 @@ export function FlowingWaveBackground() {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-[var(--bg)] transition-colors duration-500">
-      {/* 1. Ambient Volumetric Glow Behind the Wave (Blaze Orange) */}
+      {/* 1. Ambient Volumetric Glow Behind the Wave (Blaze Orange Horizon) */}
       <div
-        className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-[90vw] h-[45vh] max-w-[1200px] rounded-full opacity-20 dark:opacity-25 blur-[170px] pointer-events-none transition-opacity duration-500"
+        className="absolute bottom-[4%] left-1/3 -translate-x-1/2 w-[85vw] h-[45vh] max-w-[1100px] rounded-full opacity-20 dark:opacity-25 blur-[170px] pointer-events-none transition-opacity duration-500"
         style={{
-          background: "radial-gradient(ellipse at center, rgba(241, 84, 25, 0.5) 0%, rgba(241, 84, 25, 0.12) 50%, transparent 80%)",
+          background: "radial-gradient(ellipse at center, rgba(241, 84, 25, 0.45) 0%, rgba(241, 84, 25, 0.1) 50%, transparent 80%)",
         }}
       />
 
-      {/* 2. Top-Right Atmospheric Glacier Blue Glow */}
+      {/* 2. Central Sweeping Glacier Blue Volumetric Mist */}
+      <div
+        className="absolute bottom-[14%] right-1/4 translate-x-1/4 w-[75vw] h-[40vh] max-w-[1000px] rounded-full opacity-18 dark:opacity-22 blur-[170px] pointer-events-none transition-opacity duration-500"
+        style={{
+          background: "radial-gradient(ellipse at center, rgba(119, 231, 254, 0.42) 0%, rgba(119, 231, 254, 0.08) 55%, transparent 80%)",
+        }}
+      />
+
+      {/* 3. Top-Right Atmospheric Glacier Blue Glow */}
       <div
         className="absolute top-[8%] right-[5%] w-[45vw] h-[45vw] max-w-[600px] max-h-[600px] rounded-full opacity-10 dark:opacity-15 blur-[170px] pointer-events-none transition-opacity duration-500"
         style={{
@@ -228,10 +261,10 @@ export function FlowingWaveBackground() {
         }}
       />
 
-      {/* 3. The Interactive Flowing Wave & Embers Canvas */}
+      {/* 4. The Interactive Flowing Wave & Embers Canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
-      {/* 4. Smooth Bottom Horizon Gradient Blend into current theme's var(--bg) */}
+      {/* 5. Smooth Bottom Horizon Gradient Blend into current theme's var(--bg) */}
       <div
         className="absolute inset-x-0 bottom-0 h-32 pointer-events-none transition-all duration-500"
         style={{
@@ -239,7 +272,7 @@ export function FlowingWaveBackground() {
         }}
       />
 
-      {/* 5. Smooth Top Gradient for Ultra-Clean Navbar Integration */}
+      {/* 6. Smooth Top Gradient for Ultra-Clean Navbar Integration */}
       <div
         className="absolute inset-x-0 top-0 h-28 pointer-events-none transition-all duration-500"
         style={{
