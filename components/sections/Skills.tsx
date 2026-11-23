@@ -13,7 +13,7 @@ export function Skills() {
       : skills.filter((s) => s.category === activeCategory);
 
   return (
-    <section id="skills" className="relative w-full py-16 px-6">
+    <div className="relative w-full py-10 md:py-14 px-4 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-[1240px]">
         {/* Section Header */}
         <div className="mb-10 max-w-[760px]">
@@ -37,16 +37,16 @@ export function Skills() {
                 key={cat}
                 type="button"
                 onClick={() => setActiveCategory(cat)}
-                className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-xs whitespace-nowrap shrink-0 transition-colors ${
+                className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-xs whitespace-nowrap shrink-0 transition-all ${
                   isActive
-                    ? "bg-[var(--accent)] text-white font-semibold shadow-sm"
-                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-hover)]"
+                    ? "bg-[#77E7FE]/15 text-[#77E7FE] border border-[#77E7FE]/50 shadow-[0_0_14px_rgba(119,231,254,0.25)] font-semibold"
+                    : "border border-white/10 bg-[#141412] text-[#9E9E9C] hover:text-white hover:border-white/20"
                 }`}
               >
                 <span>{cat}</span>
                 <span
                   className={`rounded-full px-1.5 py-0.2 text-[10px] ${
-                    isActive ? "bg-white/20 text-white" : "bg-[var(--border)] text-[var(--text-muted)]"
+                    isActive ? "bg-[#77E7FE]/25 text-[#77E7FE]" : "bg-white/10 text-[#656563]"
                   }`}
                 >
                   {count}
@@ -91,6 +91,6 @@ export function Skills() {
           <span className="text-[var(--text-secondary)]">SHREY SHAH · IT INFRASTRUCTURE &amp; APPLIED AI</span>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

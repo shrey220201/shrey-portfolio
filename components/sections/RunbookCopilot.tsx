@@ -46,8 +46,8 @@ export function RunbookCopilot() {
       specs: "Threshold: 0.85 · Fallback: Escalation Queue · Strict Bypass Prevention",
     },
     rag: {
-      title: "Hybrid Retrieval Node",
-      type: "Vector & BM25 Dense-Sparse Index",
+      title: "Hybrid Vector RAG Node",
+      type: "Qdrant Vector & BM25 Dense-Sparse Index",
       role: "Fetches verified incident runbooks from QNAP, VMware, and Linux postmortems using vector embeddings and reciprocal rank fusion.",
       specs: "Embeddings: bge-small-en-v1.5 · Vector Store: ChromaDB · Latency: 120ms",
     },
@@ -57,16 +57,34 @@ export function RunbookCopilot() {
       role: "Trained on synthetic enterprise runbook datasets with LoRA rank 16 on Modal serverless A100 GPUs, achieving 95.5% accuracy on held-out test sets.",
       specs: "Quantization: 4-bit NF4 · Params: 1.23B · Format: GGUF / HuggingFace",
     },
+    runbook: {
+      title: "Deterministic Runbook Synthesis",
+      type: "Cited Action Plan Generator",
+      role: "Synthesizes step-by-step remediation commands grounded directly in retrieved SOP citations with explicit dry-run parameters.",
+      specs: "Hallucination Rate: < 0.2% · Groundedness: 0.98 RAGAS · Dry-Run Verification",
+    },
+    telemetry: {
+      title: "Live Health Probe Node",
+      type: "Read-Only Hypervisor Validator",
+      role: "Dispatches read-only diagnostic checks to ESXi 8.0, Proxmox VE, or QNAP ZFS CLI to corroborate symptom truth before generating instructions.",
+      specs: "Protocols: SSH, pyVmomi, QTS API · Safe Mode: Non-Destructive Read-Only",
+    },
     human: {
       title: "Human Escalation Node",
       type: "Deterministic Safety Halt",
       role: "Intercepts any destructive command (e.g. disk formatting, RAID recreation, VM unregistration) and requests administrator cryptographic sign-off.",
       specs: "Channel: Slack / Webhook · Approval Timeout: 15m · Audit Logging: Enabled",
     },
+    ticket: {
+      title: "Inbound Incident Ingest Node",
+      type: "Event Ingress Stream",
+      role: "Normalizes inbound infrastructure alerts, parses Windows Event Logs, and deduplicates high-frequency alert storms.",
+      specs: "Throughput: 1,200 events/sec · Schema: OpenTelemetry Log Standard",
+    },
   };
 
   return (
-    <section id="runbook-copilot" className="relative w-full py-16 px-6 bg-[var(--bg-elevated)] border-t border-[var(--border)]">
+    <div className="relative w-full py-10 md:py-14 px-4 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-[1240px]">
         {/* Eyebrow & Tagline */}
         <Reveal duration={0.8}>
@@ -215,8 +233,12 @@ export function RunbookCopilot() {
                 </div>
 
                 {/* 3D Canvas */}
-                <div className="relative h-64 sm:h-72 w-full rounded-xl overflow-hidden bg-[var(--bg)] border border-[var(--border)]">
-                  <DynamicAgentGraph className="h-full w-full" />
+                <div className="relative h-72 sm:h-80 w-full rounded-xl overflow-hidden bg-[var(--bg)] border border-[var(--border)]">
+                  <DynamicAgentGraph
+                    className="h-full w-full"
+                    selectedId={selectedNode}
+                    onNodeChange={(id) => setSelectedNode(id)}
+                  />
                 </div>
 
                 {/* Interactive Node Selector Pills */}
@@ -225,10 +247,10 @@ export function RunbookCopilot() {
                     <button
                       key={key}
                       onClick={() => setSelectedNode(key)}
-                      className={`rounded-md px-2.5 py-1 font-mono text-[11px] transition-colors ${
+                      className={`rounded-md px-2.5 py-1 font-mono text-[11px] transition-all ${
                         selectedNode === key
-                          ? "bg-[var(--accent)] text-white font-semibold"
-                          : "border border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                          ? "bg-[#77E7FE]/15 text-[#77E7FE] border border-[#77E7FE]/50 shadow-[0_0_12px_rgba(119,231,254,0.25)] font-semibold"
+                          : "border border-white/10 bg-[#0C0C0A] text-[#9E9E9C] hover:text-white"
                       }`}
                     >
                       {key.toUpperCase()}
@@ -237,8 +259,8 @@ export function RunbookCopilot() {
                 </div>
 
                 {/* Live Node Inspector */}
-                <div className="mt-3 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] p-4">
-                  <div className="font-mono text-xs font-bold text-[var(--accent)] mb-1">
+                <div className="mt-3 rounded-xl border border-white/10 bg-[#141412] p-4">
+                  <div className="font-mono text-xs font-bold text-[#77E7FE] mb-1">
                     {nodeDetails[selectedNode].title}
                   </div>
                   <div className="font-mono text-[10px] text-[var(--text-muted)] uppercase mb-2">
@@ -278,6 +300,6 @@ export function RunbookCopilot() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

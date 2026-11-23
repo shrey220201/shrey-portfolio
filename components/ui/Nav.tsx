@@ -42,18 +42,12 @@ export function Nav() {
             : "bg-[var(--surface-glass)] backdrop-blur-md"
         }`}
       >
-        {/* Brand Monogram & Name */}
+        {/* Brand Name: Shrey Shah in bold ash grey */}
         <Link
           href="/"
-          className="group flex items-center gap-2.5 text-xs font-semibold tracking-tight text-[var(--text-primary)]"
+          className="text-sm sm:text-base font-bold tracking-tight text-[#B2BEB5] hover:text-white transition-colors select-none"
         >
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--text-primary)] font-mono text-[11px] font-bold text-[var(--bg)] transition-transform duration-300 group-hover:scale-105">
-            SS
-          </span>
-          <span className="font-mono text-xs tracking-wider uppercase text-[var(--text-primary)] font-semibold">
-            Shrey Shah
-          </span>
-          <span className="hidden sm:inline-block h-1.5 w-1.5 rounded-full bg-[var(--success-led)] animate-pulse" />
+          Shrey Shah
         </Link>
 
         {/* Desktop Links */}
@@ -67,14 +61,14 @@ export function Nav() {
                 href={link.href}
                 className={`relative px-3.5 py-1.5 text-xs font-medium transition-colors duration-200 ${
                   isActive
-                    ? "text-[var(--text-primary)]"
-                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    ? "text-[#77E7FE]"
+                    : "text-[#9E9E9C] hover:text-white"
                 }`}
               >
                 {isActive && (
                   <motion.span
                     layoutId="activeNavPill"
-                    className="absolute inset-0 rounded-full bg-[var(--surface-hover)] border border-[var(--border-strong)]"
+                    className="absolute inset-0 rounded-full bg-[#77E7FE]/10 border border-[#77E7FE]/40 shadow-[0_0_14px_rgba(119,231,254,0.2)]"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}

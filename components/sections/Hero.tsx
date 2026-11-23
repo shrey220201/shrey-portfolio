@@ -2,114 +2,100 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Download, Mail, HardDrive, Cpu, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  Download,
+  Mail,
+  HardDrive,
+  Cpu,
+  ShieldCheck,
+  Server,
+} from "lucide-react";
 import { siteConfig } from "@/content/site";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/Footer";
 import { Reveal } from "@/components/motion/Reveal";
 import { Magnetic } from "@/components/motion/Magnetic";
-import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
-
-const DynamicIntersectionScene = dynamic(
-  () => import("@/components/three/IntersectionScene").then((m) => m.IntersectionScene),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-[var(--border)] border-t-[var(--accent)]" />
-        <span className="mt-3 font-mono text-[11px] text-[var(--text-muted)] tracking-wider">
-          INITIALIZING CHASSIS 3D...
-        </span>
-      </div>
-    ),
-  }
-);
 
 export function Hero() {
+  const sections = [
+    { num: "00", label: "Overview", href: "#overview" },
+    { num: "01", label: "Impact Stats", href: "#stats" },
+    { num: "02", label: "The Intersection", href: "#intersection" },
+    { num: "03", label: "Runbook Copilot", href: "#runbook-copilot" },
+    { num: "04", label: "Skills Matrix", href: "#skills" },
+    { num: "05", label: "Contact Channel", href: "#contact" },
+  ];
+
   return (
     <section
       id="overview"
-      className="relative flex min-h-[82vh] w-full flex-col justify-center px-6 lg:px-12 pt-24 pb-12 overflow-hidden tech-grid-bg"
+      className="relative flex min-h-[calc(100vh-5.5rem)] w-full flex-col justify-between px-4 sm:px-8 lg:px-14 pt-8 pb-12 overflow-hidden"
     >
-      <div className="mx-auto w-full max-w-[1240px]">
-        {/* Main 2-Column Showcase */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10 xl:gap-14 items-center">
-          
-          {/* Left: Dominant, Bold Typography & Technical Grounding (7 cols) */}
-          <div className="flex flex-col items-start text-left lg:col-span-7 xl:col-span-7 w-full">
-            
-            {/* Minimal Industrial Status Pill */}
-            <Reveal delay={0.05} duration={0.6}>
-              <div className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-[var(--border-strong)] bg-[var(--bg-elevated)] px-3.5 py-1.5 backdrop-blur-xl shadow-sm">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--success-led)] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--success-led)]" />
-                </span>
-                <span className="font-mono text-[11px] tracking-wider text-[var(--text-secondary)] font-medium uppercase">
-                  STATUS: OPERATIONAL · IT INFRASTRUCTURE &amp; APPLIED AI
-                </span>
-              </div>
-            </Reveal>
+      {/* Top Identity & Location Beacon Bar */}
+      <div className="mx-auto w-full max-w-[1300px] flex items-center justify-between font-mono text-[11px] text-[var(--text-secondary)] pb-4">
+        <Reveal delay={0.05} duration={0.6}>
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elevated)]/75 px-3.5 py-1 backdrop-blur-md shadow-sm">
+            <span className="font-semibold text-[var(--text-primary)] tracking-wider uppercase">
+              ENTERPRISE INFRASTRUCTURE &amp; AGENTIC AI
+            </span>
+            <span className="text-[var(--text-muted)]">|</span>
+            <span className="text-[var(--glacier)] font-medium">VADODARA, INDIA</span>
+          </div>
+        </Reveal>
+      </div>
 
-            {/* Grand Hero Name & Strict Headline */}
+      {/* Main Hero Showcase: Cinematic Typography on Left + Atmospheric Depth */}
+      <div className="mx-auto w-full max-w-[1300px] my-auto py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+          
+          {/* Left Column: Dominant Hero Statement */}
+          <div className="lg:col-span-8 flex flex-col items-start text-left z-10">
             <Reveal delay={0.12} duration={0.8} yOffset={16}>
-              <h1 className="mb-5 tracking-[-0.035em] text-[var(--text-primary)]">
-                <span className="block text-5xl sm:text-7xl md:text-8xl lg:text-7xl xl:text-8xl font-bold tracking-tight mb-2 text-[var(--text-primary)]">
-                  Shrey Shah
-                </span>
-                <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-4xl font-semibold leading-[1.15] text-[var(--text-secondary)]">
-                  I manage enterprise storage and hypervisors, and engineer the{" "}
-                  <span className="text-[var(--text-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4">
-                    autonomous AI
-                  </span>{" "}
-                  that debugs them.
-                </span>
+              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight text-[var(--text-primary)] leading-[1.04] mb-5">
+                Shrey Shah
               </h1>
             </Reveal>
 
-            {/* Grounded Narrative Copy (Zero Slop) */}
-            <Reveal delay={0.2} duration={0.8}>
-              <p className="mb-6 text-sm sm:text-base leading-relaxed text-[var(--text-secondary)] max-w-[620px]">
-                IT Infrastructure Engineer at ITCG Solutions. Managing multi-bay enterprise storage arrays, NAKIVO/Veeam backup pipelines, and VMware/Proxmox clusters by day; designing confidence-gated LangGraph agents and fine-tuning open-weights models on Modal by night.
+            <Reveal delay={0.18} duration={0.8} yOffset={16}>
+              <p className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[var(--text-secondary)] leading-snug max-w-[720px] mb-6">
+                Infrastructure that holds.{" "}
+                <span className="text-[var(--text-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-6">
+                  Autonomous AI
+                </span>{" "}
+                that helps fix it.
               </p>
             </Reveal>
 
-            {/* Hardware Telemetry Spec HUD */}
-            <Reveal delay={0.26} duration={0.8}>
-              <div className="mb-8 grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full max-w-[620px]">
-                <div className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2">
-                  <HardDrive className="h-4 w-4 text-[var(--accent)] shrink-0" />
-                  <div className="font-mono text-[11px] leading-tight">
-                    <span className="block font-semibold text-[var(--text-primary)]">200TB+ ZFS/RAID</span>
-                    <span className="text-[var(--text-muted)] text-[10px]">Storage Array Fleet</span>
-                  </div>
+            {/* Proof Metric Chips with Glacier Blue & Blaze Orange Accents */}
+            <Reveal delay={0.24} duration={0.8} yOffset={16}>
+              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-8">
+                <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elevated)]/85 px-3.5 py-1.5 font-mono text-xs backdrop-blur-md shadow-sm">
+                  <HardDrive className="h-3.5 w-3.5 text-[var(--accent)]" />
+                  <span className="font-bold text-[var(--text-primary)]">200TB+</span>
+                  <span className="text-[var(--text-secondary)]">Enterprise ZFS Fleet</span>
                 </div>
 
-                <div className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2">
-                  <Cpu className="h-4 w-4 text-[var(--accent)] shrink-0" />
-                  <div className="font-mono text-[11px] leading-tight">
-                    <span className="block font-semibold text-[var(--text-primary)]">ESXi &amp; Proxmox</span>
-                    <span className="text-[var(--text-muted)] text-[10px]">HA Virtualization</span>
-                  </div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elevated)]/85 px-3.5 py-1.5 font-mono text-xs backdrop-blur-md shadow-sm">
+                  <Server className="h-3.5 w-3.5 text-[var(--glacier)]" />
+                  <span className="font-bold text-[var(--text-primary)]">ESXi &amp; Proxmox</span>
+                  <span className="text-[var(--text-secondary)]">HA Virtualization</span>
                 </div>
 
-                <div className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2">
-                  <ShieldCheck className="h-4 w-4 text-[var(--accent)] shrink-0" />
-                  <div className="font-mono text-[11px] leading-tight">
-                    <span className="block font-semibold text-[var(--text-primary)]">Modal QLoRA</span>
-                    <span className="text-[var(--text-muted)] text-[10px]">95.5% Eval Accuracy</span>
-                  </div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elevated)]/85 px-3.5 py-1.5 font-mono text-xs backdrop-blur-md shadow-sm">
+                  <Cpu className="h-3.5 w-3.5 text-[var(--accent)]" />
+                  <span className="font-bold text-[var(--text-primary)]">95.5%</span>
+                  <span className="text-[var(--text-secondary)]">Modal QLoRA Eval</span>
                 </div>
               </div>
             </Reveal>
 
             {/* Clean Tactile CTAs */}
-            <Reveal delay={0.32} duration={0.8}>
+            <Reveal delay={0.3} duration={0.8}>
               <div className="flex flex-wrap items-center gap-3.5">
                 <Magnetic strength={0.2}>
                   <Link
                     href="/projects"
-                    className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--accent)] px-6 text-xs sm:text-sm font-semibold text-white shadow-lg shadow-[var(--glow-accent)] transition-all duration-200 hover:opacity-95 active:scale-95"
+                    className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--accent)] px-6 text-xs sm:text-sm font-semibold text-white shadow-lg shadow-[var(--glow-accent)] transition-all duration-200 hover:opacity-95 hover:shadow-xl active:scale-95"
                   >
                     <span>View Projects</span>
                     <ArrowRight className="h-3.5 w-3.5" />
@@ -121,22 +107,22 @@ export function Hero() {
                     href={siteConfig.resumeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-11 items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elevated)] px-5 text-xs sm:text-sm font-medium text-[var(--text-primary)] transition-all duration-200 hover:border-[var(--border-strong)] hover:bg-[var(--surface-hover)] active:scale-95"
+                    className="inline-flex h-11 items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elevated)]/85 px-5 text-xs sm:text-sm font-medium text-[var(--text-primary)] transition-all duration-200 hover:border-[var(--glacier)] hover:text-[var(--glacier)] hover:bg-[var(--surface-hover)] active:scale-95 shadow-sm"
                   >
-                    <Download className="h-3.5 w-3.5 text-[var(--text-secondary)]" />
+                    <Download className="h-3.5 w-3.5 text-[var(--glacier)]" />
                     <span>Download Resume</span>
                   </a>
                 </Magnetic>
 
                 {/* Social Icon Pills */}
-                <div className="flex items-center gap-2 sm:ml-2">
+                <div className="flex items-center gap-2">
                   <Magnetic strength={0.2}>
                     <a
                       href={siteConfig.github}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="GitHub Profile"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg-elevated)]/85 text-[var(--text-secondary)] transition-colors hover:border-[var(--glacier)] hover:text-[var(--glacier)] shadow-sm"
                     >
                       <GithubIcon className="h-4 w-4" />
                     </a>
@@ -147,7 +133,7 @@ export function Hero() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="LinkedIn Profile"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg-elevated)]/85 text-[var(--text-secondary)] transition-colors hover:border-[var(--glacier)] hover:text-[var(--glacier)] shadow-sm"
                     >
                       <LinkedinIcon className="h-4 w-4" />
                     </a>
@@ -156,7 +142,7 @@ export function Hero() {
                     <a
                       href={`mailto:${siteConfig.email}`}
                       aria-label="Email Shrey"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg-elevated)]/85 text-[var(--text-secondary)] transition-colors hover:border-[var(--glacier)] hover:text-[var(--glacier)] shadow-sm"
                     >
                       <Mail className="h-4 w-4" />
                     </a>
@@ -164,43 +150,74 @@ export function Hero() {
                 </div>
               </div>
             </Reveal>
-
           </div>
 
-          {/* Right: The 3D Datacenter Rack in Precision Chassis Frame (5 cols) */}
-          <div className="lg:col-span-5 xl:col-span-5 flex justify-center w-full">
-            <Reveal delay={0.2} duration={1} yOffset={20}>
-              <motion.div
-                whileHover={{ scale: 1.01 }}
-                transition={{ type: "spring", damping: 25, stiffness: 120 }}
-                className="relative flex w-full max-w-[420px] sm:max-w-[460px] lg:max-w-[460px] xl:max-w-[480px] aspect-square flex-col items-center justify-center rounded-2xl border border-[var(--border-strong)] bg-[var(--bg-elevated)] p-4 backdrop-blur-2xl shadow-2xl overflow-hidden"
-              >
-                {/* Precision Chassis Corner Crosshairs */}
-                <span className="absolute top-2 left-2 font-mono text-[9px] text-[var(--text-muted)] select-none">+ 01_RACK</span>
-                <span className="absolute top-2 right-2 font-mono text-[9px] text-[var(--text-muted)] select-none">10GbE_SFP+ +</span>
-                <span className="absolute bottom-2 left-2 font-mono text-[9px] text-[var(--text-muted)] select-none">+ 42U_BAY</span>
-                <span className="absolute bottom-2 right-2 font-mono text-[9px] text-[var(--text-muted)] select-none">ZFS_ON +</span>
+          {/* Right Column: Saffron / motionsites.ai Style Vertical Section Tracker & Narrative */}
+          <div className="lg:col-span-4 flex flex-col justify-between items-start lg:items-end text-left lg:text-right space-y-8 z-10">
+            {/* Minimalist Vertical Section Tracker */}
+            <Reveal delay={0.2} duration={0.8}>
+              <div className="hidden lg:flex flex-col items-end space-y-2 font-mono text-xs">
+                {sections.map((sec, idx) => (
+                  <a
+                    key={sec.num}
+                    href={sec.href}
+                    className={`group flex items-center gap-2.5 transition-colors ${
+                      idx === 0
+                        ? "text-[var(--accent)] font-bold"
+                        : "text-[var(--text-muted)] hover:text-[var(--glacier)]"
+                    }`}
+                  >
+                    <span className="text-[11px] uppercase tracking-wider hidden group-hover:inline-block">
+                      {sec.label}
+                    </span>
+                    <span className="text-xs">
+                      {idx === 0 ? `FIELD ${sec.num}` : sec.num}
+                    </span>
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full transition-transform ${
+                        idx === 0
+                          ? "bg-[var(--accent)] scale-125 shadow-[0_0_8px_var(--accent)]"
+                          : "bg-[var(--border-strong)] group-hover:bg-[var(--glacier)] group-hover:scale-110"
+                      }`}
+                    />
+                  </a>
+                ))}
+              </div>
+            </Reveal>
 
-                {/* Bezel Status Bar */}
-                <div className="absolute top-4 inset-x-8 flex items-center justify-between border-b border-[var(--border)] pb-1.5 z-20">
-                  <div className="flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--success-led)] animate-pulse" />
-                    <span className="font-mono text-[10px] uppercase text-[var(--text-secondary)]">TELEMETRY LIVE</span>
-                  </div>
-                  <span className="font-mono text-[10px] text-[var(--text-muted)]">INTERACTION: ROTATE 360°</span>
+            {/* Narrative Micro-Story */}
+            <Reveal delay={0.26} duration={0.8}>
+              <div className="max-w-[340px] text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                <p>
+                  IT Infrastructure Engineer at ITCG Solutions in Vadodara. Bare-metal storage
+                  arrays, NAKIVO/Veeam recovery SLAs, and Linux clusters by day;
+                  cyclic LangGraph agents and fine-tuned open weights by night.
+                </p>
+                <div className="mt-3 font-mono text-[11px] text-[var(--glacier)] flex items-center lg:justify-end gap-1.5 font-medium">
+                  <ShieldCheck className="h-3.5 w-3.5 text-[var(--glacier)]" />
+                  <span>Guarded AI · Physical Foundations</span>
                 </div>
-
-                {/* 3D Model Stage */}
-                <div
-                  id="hero-3d-stage"
-                  className="relative z-10 flex h-full w-full min-h-[300px] sm:min-h-[340px] flex-col items-center justify-center pt-5"
-                >
-                  <DynamicIntersectionScene className="h-full w-full" />
-                </div>
-              </motion.div>
+              </div>
             </Reveal>
           </div>
 
+        </div>
+      </div>
+
+      {/* Bottom Bar: Ambient Indicators */}
+      <div className="mx-auto w-full max-w-[1300px] flex items-center justify-between border-t border-[var(--border)] pt-4 font-mono text-[10px] text-[var(--text-muted)]">
+        <div className="flex items-center gap-3">
+          <span className="text-[var(--text-secondary)]">BARE-METAL ZFS</span>
+          <span>·</span>
+          <span className="text-[var(--text-secondary)]">VMWARE ESXI 8.0</span>
+          <span>·</span>
+          <span className="text-[var(--glacier)]">LANGGRAPH p &ge; 0.85</span>
+        </div>
+
+        <div className="hidden sm:flex items-center gap-2">
+          <span>PORTFOLIO v2.4</span>
+          <span>·</span>
+          <span className="text-[var(--accent)] font-semibold">SHREY SHAH</span>
         </div>
       </div>
     </section>

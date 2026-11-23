@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, Layers, Terminal, Cpu } from "lucide-react";
@@ -39,39 +41,54 @@ export default function HomePage() {
         "The balance of bare-metal enterprise storage, multi-hypervisor virtualization, and modern applied LLM / agent engineering.",
       href: "/skills",
       icon: Cpu,
-      accent: "var(--accent-2)",
+      accent: "var(--accent)",
       cta: "Inspect Skills Matrix",
     },
   ];
 
   return (
-    <div className="flex flex-col w-full">
-      {/* 1. Hero: Dominant Typography, Apple-Inspired Aesthetic & 3D Interactive Rack */}
+    <div className="relative flex flex-col w-full overflow-hidden">
+      {/* 1. Hero: Dominant Typography, Holographic 3D Interactive Cyber Core */}
       <Hero />
+
+      {/* Smooth Slate Section Divider */}
+      <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-[#F15419]/30 to-transparent my-2" />
 
       {/* 2. Impact Stats: Compact Key Metrics Strip */}
       <Stats />
 
+      {/* Smooth Slate Section Divider */}
+      <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-[#77E7FE]/20 to-transparent my-4" />
+
       {/* 3. The Intersection: Infrastructure ⇄ Applied AI */}
       <Intersection />
+
+      {/* Smooth Slate Section Divider */}
+      <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-[#F15419]/25 to-transparent my-6" />
 
       {/* 4. Flagship Project: Runbook Copilot */}
       <RunbookCopilot />
 
+      {/* Smooth Slate Section Divider */}
+      <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-[#77E7FE]/20 to-transparent my-6" />
+
       {/* 5. Technical Skills Matrix */}
       <Skills />
 
+      {/* Smooth Slate Section Divider */}
+      <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-[#F15419]/25 to-transparent my-6" />
+
       {/* 6. Deep-Dive Portal Bento Grid */}
-      <section className="relative w-full py-12 md:py-16 px-6 border-t border-[var(--border)] bg-[var(--surface-glass)]">
-        <div className="mx-auto max-w-[1200px]">
+      <section className="relative w-full py-12 md:py-16 px-4 sm:px-6 lg:px-12">
+        <div className="mx-auto max-w-[1240px]">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
             <div>
               <p className="eyebrow mb-2">PORTFOLIO EXPLORATION</p>
-              <h2 className="text-3xl font-semibold tracking-[-0.03em] sm:text-4xl md:text-5xl text-[var(--text-primary)]">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-[var(--text-primary)]">
                 Dive Deeper.
               </h2>
               <p className="mt-2 text-sm sm:text-base text-[var(--text-secondary)]">
-                Explore dedicated sections categorized by discipline and outcomes.
+                Explore dedicated production case studies, incident field notes, and complete career history.
               </p>
             </div>
 
@@ -90,11 +107,11 @@ export default function HomePage() {
               return (
                 <Reveal key={idx} delay={idx * 0.08} duration={0.7}>
                   <Link href={card.href} className="group block h-full">
-                    <GlassCard className="h-full p-6 flex flex-col justify-between transition-all duration-300 group-hover:border-[var(--border-strong)] group-hover:-translate-y-1">
+                    <GlassCard className="h-full p-6 flex flex-col justify-between transition-all duration-300 group-hover:border-[var(--border-focus)] group-hover:-translate-y-1 bg-white/[0.02] backdrop-blur-xl">
                       <div>
                         <div className="flex items-center justify-between mb-4">
                           <div
-                            className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)]"
+                            className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border)] bg-black/40"
                             style={{ color: card.accent }}
                           >
                             <Icon className="h-5 w-5" />
@@ -126,7 +143,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. Contact Section */}
+      {/* Smooth Slate Section Divider */}
+      <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-[#F15419]/30 to-transparent my-6" />
+
+      {/* 7. Contact Section */}
       <Contact />
     </div>
   );

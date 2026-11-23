@@ -7,13 +7,13 @@ import { Reveal } from "@/components/motion/Reveal";
 
 export function Stats() {
   return (
-    <section className="w-full border-y border-[var(--border)] bg-[var(--bg-elevated)] py-6 px-4 sm:px-6">
+    <div className="w-full py-4 sm:py-6 px-4 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-[1240px]">
         {/* Verified Telemetry Bar */}
         <div className="mb-3 flex items-center justify-between border-b border-[var(--border)] pb-2 font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
           <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--success-led)]" />
-            <span>VERIFIED PRODUCTION TELEMETRY</span>
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
+            <span className="text-[var(--text-secondary)]">VERIFIED PRODUCTION TELEMETRY</span>
           </div>
           <span className="hidden sm:inline">SOURCE: ITCG SOLUTIONS INFRASTRUCTURE &amp; EVAL BENCHMARKS</span>
         </div>
@@ -52,6 +52,6 @@ export function Stats() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

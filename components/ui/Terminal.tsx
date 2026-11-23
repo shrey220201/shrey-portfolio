@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Terminal as TerminalIcon, X, CornerDownLeft, Maximize2, Minimize2 } from "lucide-react";
+import { X, CornerDownLeft, Maximize2, Minimize2 } from "lucide-react";
 import { siteConfig } from "@/content/site";
 import { projects } from "@/content/projects";
 import { experiences } from "@/content/experience";
@@ -53,7 +53,7 @@ export function Terminal() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const { setTheme } = useTheme();
 
-  // Keyboard shortcut: Cmd+K / Ctrl+K
+  // Keyboard shortcut: Cmd+K / Ctrl+K & custom window event
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -64,8 +64,14 @@ export function Terminal() {
       }
     };
 
+    const handleCustomOpen = () => setIsOpen(true);
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("open-terminal", handleCustomOpen);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("open-terminal", handleCustomOpen);
+    };
   }, [isOpen]);
 
   // Focus input when opened
@@ -261,17 +267,6 @@ export function Terminal() {
 
   return (
     <>
-      {/* Floating CLI Toggle Button (Bottom-Right) */}
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        aria-label="Open Interactive Terminal (Cmd+K)"
-        className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg-elevated)]/90 text-[var(--accent-2)] backdrop-blur-xl shadow-xl transition-all duration-300 hover:border-[var(--accent-2)] hover:scale-110 active:scale-95 group"
-      >
-        <TerminalIcon className="h-4 w-4 transition-transform group-hover:rotate-6" />
-        <span className="sr-only">Open Terminal</span>
-      </button>
-
       {/* Glass Terminal Modal */}
       {isOpen && (
         <div

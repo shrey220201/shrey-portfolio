@@ -8,8 +8,8 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "deploy:cf": "npm run build && wrangler deploy",
-    "preview:cf": "npm run build && wrangler dev"
+    "deploy:cf": "npm run build && npx wrangler deploy",
+    "preview:cf": "npm run build && npx wrangler dev"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

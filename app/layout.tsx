@@ -6,6 +6,7 @@ import { NoiseOverlay } from "@/components/ui/NoiseOverlay";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { FluidCursor } from "@/components/ui/FluidCursor";
 import { CustomCursor } from "@/components/ui/Cursor";
+import { FlowingWaveBackground } from "@/components/ui/FlowingWaveBackground";
 import { PageIntro } from "@/components/motion/PageIntro";
 import { Terminal } from "@/components/ui/Terminal";
 import { Nav } from "@/components/ui/Nav";
@@ -112,6 +113,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <SmoothScrollProvider>
+            <FlowingWaveBackground />
             <PageIntro />
             <NoiseOverlay />
             <ScrollProgress />

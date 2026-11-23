@@ -57,10 +57,7 @@ export function Intersection() {
   ];
 
   return (
-    <section
-      id="intersection"
-      className="relative w-full py-16 px-6 border-t border-[var(--border)]"
-    >
+    <div className="relative w-full py-10 md:py-14 px-4 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-[1240px]">
         {/* Section Header */}
         <div className="mb-10 max-w-[760px]">
@@ -83,10 +80,10 @@ export function Intersection() {
               <GlassCard
                 key={step.id}
                 glow={isHighlighted ? "accent" : "none"}
-                className={`flex flex-col justify-between ${
+                className={`flex flex-col justify-between backdrop-blur-xl ${
                   isHighlighted
-                    ? "border-[var(--accent)]/40 bg-[var(--bg-elevated)]"
-                    : "border-[var(--border)] bg-[var(--bg-elevated)]"
+                    ? "border-[#77E7FE]/50 bg-white/[0.03] shadow-lg shadow-[#77E7FE]/10"
+                    : "border-white/10 bg-white/[0.015]"
                 }`}
               >
                 <div>
@@ -97,8 +94,8 @@ export function Intersection() {
                     <span
                       className={`inline-flex items-center rounded-md px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider ${
                         isHighlighted
-                          ? "bg-[var(--accent-muted)] text-[var(--accent)] border border-[var(--accent)]/30"
-                          : "bg-[var(--surface-hover)] text-[var(--text-secondary)] border border-[var(--border)]"
+                          ? "bg-[#77E7FE]/15 text-[#77E7FE] border border-[#77E7FE]/40 shadow-[0_0_10px_rgba(119,231,254,0.2)]"
+                          : "bg-white/[0.04] text-[#9E9E9C] border border-white/10"
                       }`}
                     >
                       {step.badge}
@@ -106,7 +103,7 @@ export function Intersection() {
                   </div>
 
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border-strong)] bg-[var(--bg-card)] text-[var(--accent)]">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-[#141412] text-[#F15419]">
                       <Icon className="h-5 w-5" />
                     </div>
                     <div>
@@ -170,6 +167,6 @@ export function Intersection() {
           </a>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

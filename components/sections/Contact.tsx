@@ -68,7 +68,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="relative w-full py-16 px-6 border-t border-[var(--border)]">
+    <div className="relative w-full py-10 md:py-14 px-4 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-[1240px]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Column: Direct Info & Communication Channels (5 cols) */}
@@ -243,7 +243,7 @@ export function Contact() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="alex@enterprise.com"
-                        className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-card)] px-3.5 py-2.5 text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:border-[var(--accent)] focus:outline-none transition-colors"
+                        className="w-full rounded-lg border border-white/10 bg-[#0C0C0A] px-3.5 py-2.5 text-xs text-white placeholder-[#656563] focus:border-[#77E7FE] focus:ring-1 focus:ring-[#77E7FE]/40 focus:outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -259,7 +259,7 @@ export function Contact() {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Details on your infrastructure, storage challenge, or applied AI initiative..."
-                      className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-card)] px-3.5 py-2.5 text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:border-[var(--accent)] focus:outline-none transition-colors resize-none"
+                      className="w-full rounded-lg border border-white/10 bg-[#0C0C0A] px-3.5 py-2.5 text-xs text-white placeholder-[#656563] focus:border-[#77E7FE] focus:ring-1 focus:ring-[#77E7FE]/40 focus:outline-none transition-all resize-none"
                     />
                   </div>
 
@@ -292,6 +292,6 @@ export function Contact() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
