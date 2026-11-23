@@ -66,10 +66,12 @@ export function FluidCursor() {
 
     if (isWebGL2) {
       const gl2 = gl as WebGL2RenderingContext;
-      gl2.getExtension("EXT_color_buffer_float");
-      halfFloatTexType = gl2.HALF_FLOAT;
-      internalFormatRGBA = gl2.RGBA16F;
-      formatRGBA = gl2.RGBA;
+      const extFloat = gl2.getExtension("EXT_color_buffer_float");
+      if (extFloat) {
+        halfFloatTexType = gl2.HALF_FLOAT;
+        internalFormatRGBA = gl2.RGBA16F;
+        formatRGBA = gl2.RGBA;
+      }
     } else {
       const halfFloatExt = gl.getExtension("OES_texture_half_float");
       gl.getExtension("OES_texture_half_float_linear");

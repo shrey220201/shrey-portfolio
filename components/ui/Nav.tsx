@@ -31,16 +31,19 @@ export function Nav() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 flex justify-center px-4 pt-3 md:pt-4">
+    <header className="fixed top-0 left-0 right-0 z-40 flex justify-center px-4 pt-3 md:pt-4 isolate">
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className={`flex w-full max-w-[1140px] items-center justify-between rounded-full border border-[var(--border)] px-4 py-2 transition-all duration-300 md:px-5 ${
+        className={`flex w-full max-w-[1140px] items-center justify-between rounded-full border border-[var(--border)] px-4 py-2 transition-all duration-300 md:px-5 transform-gpu ${
           scrolled
             ? "bg-[var(--bg-elevated)]/90 backdrop-blur-xl shadow-lg shadow-black/10 border-[var(--border-strong)]"
             : "bg-[var(--surface-glass)] backdrop-blur-md"
         }`}
+        style={{
+          WebkitBackdropFilter: scrolled ? "blur(24px)" : "blur(12px)",
+        }}
       >
         {/* Brand Name: Shrey Shah in bold ash grey */}
         <Link

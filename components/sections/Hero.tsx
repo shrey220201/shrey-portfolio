@@ -29,7 +29,7 @@ export function Hero() {
   return (
     <section
       id="overview"
-      className="relative flex min-h-[calc(100vh-5.5rem)] w-full flex-col justify-between px-4 sm:px-8 lg:px-14 pt-8 pb-12 overflow-hidden"
+      className="relative flex min-h-[calc(100vh-5.5rem)] min-h-[calc(100dvh-5.5rem)] w-full flex-col justify-between px-4 sm:px-8 lg:px-14 pt-8 pb-12 overflow-hidden"
     >
       {/* Top Identity & Location Beacon Bar */}
       <div className="mx-auto w-full max-w-[1300px] flex items-center justify-between font-mono text-[11px] text-[var(--text-secondary)] pb-4">

@@ -55,7 +55,13 @@ export function SceneWrapper({
             dpr={[1, 1.5]} // Capped at 1.5 as required by guidelines
             frameloop={prefersReduced ? "demand" : "always"}
             camera={{ position: cameraPosition, fov }}
-            gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+            gl={{
+              antialias: true,
+              alpha: true,
+              powerPreference: "high-performance",
+              failIfMajorPerformanceCaveat: false,
+            }}
+            style={{ touchAction: "none" }}
           >
             {children}
           </Canvas>
