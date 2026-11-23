@@ -69,7 +69,7 @@ export function RunbookCopilot() {
   };
 
   return (
-    <div className="relative w-full py-10 md:py-14 px-4 sm:px-8 lg:px-12">
+    <section id="runbook-copilot" className="relative w-full py-10 md:py-14 px-4 sm:px-8 lg:px-12 scroll-mt-20">
       <div className="mx-auto max-w-[1240px]">
         {/* Eyebrow & Tagline */}
         <Reveal duration={0.8}>
@@ -285,6 +285,6 @@ export function RunbookCopilot() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

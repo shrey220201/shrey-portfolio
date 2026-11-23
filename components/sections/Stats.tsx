@@ -7,7 +7,7 @@ import { Reveal } from "@/components/motion/Reveal";
 
 export function Stats() {
   return (
-    <div className="w-full py-4 sm:py-6 px-4 sm:px-8 lg:px-12">
+    <section id="stats" className="w-full py-4 sm:py-6 px-4 sm:px-8 lg:px-12 scroll-mt-20">
       <div className="mx-auto max-w-[1240px]">
         {/* Verified Telemetry Bar */}
         <div className="mb-3 flex items-center justify-between border-b border-[var(--border)] pb-2 font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
@@ -48,6 +48,6 @@ export function Stats() {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

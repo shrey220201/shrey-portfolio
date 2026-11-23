@@ -160,7 +160,17 @@ export function Hero() {
                   <a
                     key={sec.num}
                     href={sec.href}
-                    className={`group flex items-center gap-2.5 transition-colors ${
+                    onClick={(e) => {
+                      if (sec.href.startsWith("#")) {
+                        const el = document.getElementById(sec.href.slice(1));
+                        if (el) {
+                          e.preventDefault();
+                          el.scrollIntoView({ behavior: "smooth" });
+                          window.history.pushState(null, "", sec.href);
+                        }
+                      }
+                    }}
+                    className={`group flex items-center gap-2.5 transition-colors cursor-pointer ${
                       idx === 0
                         ? "text-[var(--accent)] font-bold"
                         : "text-[var(--text-muted)] hover:text-[var(--glacier)]"

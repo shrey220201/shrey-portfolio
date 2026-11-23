@@ -13,7 +13,7 @@ export function Skills() {
       : skills.filter((s) => s.category === activeCategory);
 
   return (
-    <div className="relative w-full py-10 md:py-14 px-4 sm:px-8 lg:px-12">
+    <section id="skills" className="relative w-full py-10 md:py-14 px-4 sm:px-8 lg:px-12 scroll-mt-20">
       <div className="mx-auto max-w-[1240px]">
         {/* Section Header */}
         <div className="mb-10 max-w-[760px]">
@@ -91,6 +91,6 @@ export function Skills() {
           <span className="text-[var(--text-secondary)]">SHREY SHAH · IT INFRASTRUCTURE &amp; APPLIED AI</span>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

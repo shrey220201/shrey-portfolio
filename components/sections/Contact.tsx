@@ -68,7 +68,7 @@ export function Contact() {
   };
 
   return (
-    <div className="relative w-full py-10 md:py-14 px-4 sm:px-8 lg:px-12">
+    <section id="contact" className="relative w-full py-10 md:py-14 px-4 sm:px-8 lg:px-12 scroll-mt-20">
       <div className="mx-auto max-w-[1240px]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Column: Direct Info & Communication Channels (5 cols) */}
@@ -292,6 +292,6 @@ export function Contact() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
