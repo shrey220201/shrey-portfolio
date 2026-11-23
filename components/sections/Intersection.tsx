@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Server, Cpu, ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 
@@ -158,21 +159,13 @@ export function Intersection() {
               </p>
             </div>
           </div>
-          <a
-            href="#runbook-copilot"
-            onClick={(e) => {
-              const el = document.getElementById("runbook-copilot");
-              if (el) {
-                e.preventDefault();
-                el.scrollIntoView({ behavior: "smooth" });
-                window.history.pushState(null, "", "#runbook-copilot");
-              }
-            }}
+          <Link
+            href="/projects/runbook-copilot"
             className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2 font-mono text-xs font-semibold text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all cursor-pointer group shadow-sm active:scale-95"
           >
             <span>Inspect Runbook Copilot</span>
             <ArrowRight className="h-3.5 w-3.5 text-[var(--accent)] transition-transform group-hover:translate-x-0.5" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>
