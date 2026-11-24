@@ -33,17 +33,19 @@ export default async function Image() {
               style={{
                 width: "48px",
                 height: "48px",
-                borderRadius: "50%",
-                backgroundColor: "#F5F5F7",
-                color: "#000000",
+                borderRadius: "12px",
+                backgroundColor: "#0C0C0A",
+                border: "2px solid #F15419",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "20px",
-                fontWeight: "bold",
+                fontSize: "22px",
+                fontWeight: 800,
+                letterSpacing: "-0.5px",
               }}
             >
-              SS
+              <span style={{ color: "#FFFFFF" }}>S</span>
+              <span style={{ color: "#F15419" }}>S</span>
             </div>
             <span style={{ fontSize: "20px", letterSpacing: "0.1em", textTransform: "uppercase", color: "#A1A1A6" }}>
               {siteConfig.name}
