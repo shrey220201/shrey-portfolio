@@ -7,11 +7,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight, Command } from "lucide-react";
 import { siteConfig } from "@/content/site";
 import { ThemeToggle } from "./ThemeToggle";
+import { useIntro } from "@/lib/intro";
 
 export function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { introComplete } = useIntro();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,8 +36,8 @@ export function Nav() {
     <header className="fixed top-0 left-0 right-0 z-40 flex justify-center px-4 pt-3 md:pt-4 isolate">
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        animate={introComplete ? { y: 0, opacity: 1 } : { y: -20, opacity: 0 }}
+        transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
         className={`flex w-full max-w-[1140px] items-center justify-between rounded-full border border-[var(--border)] px-4 py-2 transition-all duration-300 md:px-5 transform-gpu ${
           scrolled
             ? "bg-[var(--bg-elevated)]/90 backdrop-blur-xl shadow-lg shadow-black/10 border-[var(--border-strong)]"

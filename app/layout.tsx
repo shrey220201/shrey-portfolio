@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/lib/theme";
+import { IntroProvider } from "@/lib/intro";
 import { SmoothScrollProvider } from "@/lib/lenis";
 import { NoiseOverlay } from "@/components/ui/NoiseOverlay";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
@@ -112,20 +113,22 @@ export default function RootLayout({
         className="min-h-screen bg-[var(--bg)] text-[var(--text-primary)] font-sans antialiased selection:bg-[var(--accent)] selection:text-white"
       >
         <ThemeProvider>
-          <SmoothScrollProvider>
-            <FlowingWaveBackground />
-            <PageIntro />
-            <NoiseOverlay />
-            <ScrollProgress />
-            <FluidCursor />
-            <CustomCursor />
-            <Nav />
-            <main className="relative z-10 flex min-h-screen flex-col pt-20">
-              {children}
-            </main>
-            <Terminal />
-            <Footer />
-          </SmoothScrollProvider>
+          <IntroProvider>
+            <SmoothScrollProvider>
+              <FlowingWaveBackground />
+              <PageIntro />
+              <NoiseOverlay />
+              <ScrollProgress />
+              <FluidCursor />
+              <CustomCursor />
+              <Nav />
+              <main className="relative z-10 flex min-h-screen flex-col pt-20">
+                {children}
+              </main>
+              <Terminal />
+              <Footer />
+            </SmoothScrollProvider>
+          </IntroProvider>
         </ThemeProvider>
       </body>
     </html>
