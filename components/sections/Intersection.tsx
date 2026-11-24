@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Server, Cpu, ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { CardReveal, CardTitleReveal, CardItemReveal } from "@/components/motion/CardReveal";
 
 export function Intersection() {
   const steps = [
@@ -78,68 +79,73 @@ export function Intersection() {
             const isHighlighted = index === 2;
 
             return (
-              <GlassCard
-                key={step.id}
-                glow={isHighlighted ? "accent" : "none"}
-                className={`flex flex-col justify-between backdrop-blur-xl ${
-                  isHighlighted
-                    ? "border-[#77E7FE]/50 bg-white/[0.03] shadow-lg shadow-[#77E7FE]/10"
-                    : "border-white/10 bg-white/[0.015]"
-                }`}
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                      DISCIPLINE {step.number}
-                    </span>
-                    <span
-                      className={`inline-flex items-center rounded-md px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider ${
-                        isHighlighted
-                          ? "bg-[#77E7FE]/15 text-[#77E7FE] border border-[#77E7FE]/40 shadow-[0_0_10px_rgba(119,231,254,0.2)]"
-                          : "bg-white/[0.04] text-[#9E9E9C] border border-white/10"
-                      }`}
-                    >
-                      {step.badge}
-                    </span>
-                  </div>
+              <CardReveal key={step.id} index={index} className="h-full">
+                <GlassCard
+                  glow={isHighlighted ? "accent" : "none"}
+                  className={`h-full flex flex-col justify-between backdrop-blur-xl ${
+                    isHighlighted
+                      ? "border-[#77E7FE]/50 bg-white/[0.03] shadow-lg shadow-[#77E7FE]/10"
+                      : "border-white/10 bg-white/[0.015]"
+                  }`}
+                >
+                  <div>
+                    <CardItemReveal className="flex items-center justify-between mb-5">
+                      <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+                        DISCIPLINE {step.number}
+                      </span>
+                      <span
+                        className={`inline-flex items-center rounded-md px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider ${
+                          isHighlighted
+                            ? "bg-[#77E7FE]/15 text-[#77E7FE] border border-[#77E7FE]/40 shadow-[0_0_10px_rgba(119,231,254,0.2)]"
+                            : "bg-white/[0.04] text-[#9E9E9C] border border-white/10"
+                        }`}
+                      >
+                        {step.badge}
+                      </span>
+                    </CardItemReveal>
 
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-[#141412] text-[#F15419]">
-                      <Icon className="h-5 w-5" />
+                    <div className="flex items-center gap-3 mb-4">
+                      <CardItemReveal className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-[#141412] text-[#F15419]">
+                        <Icon className="h-5 w-5" />
+                      </CardItemReveal>
+                      <CardTitleReveal>
+                        <h3 className="text-lg font-bold text-[var(--text-primary)]">
+                          {step.title}
+                        </h3>
+                        <p className="text-[11px] text-[var(--text-muted)] font-mono">
+                          {step.subtitle}
+                        </p>
+                      </CardTitleReveal>
                     </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-[var(--text-primary)]">
-                        {step.title}
-                      </h3>
-                      <p className="text-[11px] text-[var(--text-muted)] font-mono">
-                        {step.subtitle}
+
+                    <CardItemReveal>
+                      <p className="mt-3 text-xs sm:text-sm leading-relaxed text-[var(--text-secondary)]">
+                        {step.description}
                       </p>
+                    </CardItemReveal>
+
+                    <ul className="mt-5 space-y-2 border-t border-[var(--border)] pt-5">
+                      {step.details.map((detail, dIdx) => (
+                        <CardItemReveal key={dIdx}>
+                          <li className="flex items-start gap-2 text-xs text-[var(--text-secondary)]">
+                            <CheckCircle2 className="h-3.5 w-3.5 shrink-0 mt-0.5 text-[var(--accent)]" />
+                            <span>{detail}</span>
+                          </li>
+                        </CardItemReveal>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <CardItemReveal className="mt-6 pt-4 border-t border-[var(--border)]">
+                    <div className="font-mono text-[10px] text-[var(--text-muted)] uppercase tracking-wider mb-1">
+                      TECHNOLOGY STACK
                     </div>
-                  </div>
-
-                  <p className="mt-3 text-xs sm:text-sm leading-relaxed text-[var(--text-secondary)]">
-                    {step.description}
-                  </p>
-
-                  <ul className="mt-5 space-y-2 border-t border-[var(--border)] pt-5">
-                    {step.details.map((detail, dIdx) => (
-                      <li key={dIdx} className="flex items-start gap-2 text-xs text-[var(--text-secondary)]">
-                        <CheckCircle2 className="h-3.5 w-3.5 shrink-0 mt-0.5 text-[var(--accent)]" />
-                        <span>{detail}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-[var(--border)]">
-                  <div className="font-mono text-[10px] text-[var(--text-muted)] uppercase tracking-wider mb-1">
-                    TECHNOLOGY STACK
-                  </div>
-                  <div className="font-mono text-[11px] text-[var(--text-secondary)] font-medium">
-                    {step.specs}
-                  </div>
-                </div>
-              </GlassCard>
+                    <div className="font-mono text-[11px] text-[var(--text-secondary)] font-medium">
+                      {step.specs}
+                    </div>
+                  </CardItemReveal>
+                </GlassCard>
+              </CardReveal>
             );
           })}
         </div>

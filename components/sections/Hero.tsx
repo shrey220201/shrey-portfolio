@@ -22,8 +22,9 @@ export function Hero() {
     { num: "01", label: "Impact Stats", href: "#stats" },
     { num: "02", label: "The Intersection", href: "#intersection" },
     { num: "03", label: "Runbook Copilot", href: "#runbook-copilot" },
-    { num: "04", label: "Skills Matrix", href: "#skills" },
-    { num: "05", label: "Contact Channel", href: "#contact" },
+    { num: "04", label: "Experience", href: "#experience" },
+    { num: "05", label: "Skills Domains", href: "#skills" },
+    { num: "06", label: "Contact Channel", href: "#contact" },
   ];
 
   return (

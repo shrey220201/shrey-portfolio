@@ -1,11 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { skillCategories, skills, SkillCategory } from "@/content/skills";
 import { Info } from "lucide-react";
 
-export function Skills() {
+function SkillsContent() {
+  const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState<SkillCategory>("All");
+
+  useEffect(() => {
+    const cat = searchParams.get("category");
+    if (cat && skillCategories.includes(cat as SkillCategory)) {
+      setActiveCategory(cat as SkillCategory);
+    }
+  }, [searchParams]);
 
   const filteredSkills =
     activeCategory === "All"
@@ -92,5 +101,13 @@ export function Skills() {
         </div>
       </div>
     </section>
+  );
+}
+
+export function Skills() {
+  return (
+    <Suspense fallback={<div className="min-h-[300px]" />}>
+      <SkillsContent />
+    </Suspense>
   );
 }

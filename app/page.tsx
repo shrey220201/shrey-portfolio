@@ -7,10 +7,11 @@ import { Hero } from "@/components/sections/Hero";
 import { Stats } from "@/components/sections/Stats";
 import { Intersection } from "@/components/sections/Intersection";
 import { RunbookCopilot } from "@/components/sections/RunbookCopilot";
-import { Skills } from "@/components/sections/Skills";
+import { ExperienceBrief } from "@/components/sections/ExperienceBrief";
+import { SkillsBrief } from "@/components/sections/SkillsBrief";
 import { Contact } from "@/components/sections/Contact";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { Reveal } from "@/components/motion/Reveal";
+import { CardReveal, CardTitleReveal, CardItemReveal } from "@/components/motion/CardReveal";
 
 export default function HomePage() {
   const exploreCards = [
@@ -72,8 +73,14 @@ export default function HomePage() {
       {/* Smooth Slate Section Divider */}
       <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-[#77E7FE]/20 to-transparent my-6" />
 
-      {/* 5. Technical Skills Matrix */}
-      <Skills />
+      {/* 5. Career & Experience Brief */}
+      <ExperienceBrief />
+
+      {/* Smooth Slate Section Divider */}
+      <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-[#F15419]/25 to-transparent my-6" />
+
+      {/* 6. Technical Skills Domains */}
+      <SkillsBrief />
 
       {/* Smooth Slate Section Divider */}
       <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-[#F15419]/25 to-transparent my-6" />
@@ -105,11 +112,11 @@ export default function HomePage() {
             {exploreCards.map((card, idx) => {
               const Icon = card.icon;
               return (
-                <Reveal key={idx} delay={idx * 0.08} duration={0.7}>
+                <CardReveal key={idx} index={idx} className="h-full">
                   <Link href={card.href} className="group block h-full">
                     <GlassCard className="h-full p-6 flex flex-col justify-between transition-all duration-300 group-hover:border-[var(--border-focus)] group-hover:-translate-y-1 bg-white/[0.02] backdrop-blur-xl">
                       <div>
-                        <div className="flex items-center justify-between mb-4">
+                        <CardItemReveal className="flex items-center justify-between mb-4">
                           <div
                             className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border)] bg-black/40"
                             style={{ color: card.accent }}
@@ -119,24 +126,28 @@ export default function HomePage() {
                           <span className="font-mono text-[11px] text-[var(--text-secondary)]">
                             {card.tagline}
                           </span>
-                        </div>
+                        </CardItemReveal>
 
-                        <h3 className="text-xl font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors mb-2">
-                          {card.title}
-                        </h3>
+                        <CardTitleReveal>
+                          <h3 className="text-xl font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors mb-2">
+                            {card.title}
+                          </h3>
+                        </CardTitleReveal>
 
-                        <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
-                          {card.description}
-                        </p>
+                        <CardItemReveal>
+                          <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                            {card.description}
+                          </p>
+                        </CardItemReveal>
                       </div>
 
-                      <div className="mt-6 pt-4 border-t border-[var(--border)] flex items-center justify-between font-mono text-xs text-[var(--text-primary)]">
+                      <CardItemReveal className="mt-6 pt-4 border-t border-[var(--border)] flex items-center justify-between font-mono text-xs text-[var(--text-primary)]">
                         <span>{card.cta}</span>
                         <ArrowRight className="h-3.5 w-3.5 transform transition-transform group-hover:translate-x-1 text-[var(--accent)]" />
-                      </div>
+                      </CardItemReveal>
                     </GlassCard>
                   </Link>
-                </Reveal>
+                </CardReveal>
               );
             })}
           </div>
