@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,22 +8,49 @@ import { Menu, X, ArrowUpRight, Command } from "lucide-react";
 import { siteConfig } from "@/content/site";
 import { ThemeToggle } from "./ThemeToggle";
 import { useIntro } from "@/lib/intro";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 export function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const lastScrollYRef = useRef(0);
   const { introComplete } = useIntro();
+  const prefersReduced = useReducedMotion();
 
   useEffect(() => {
+    setHidden(false);
+    setMobileMenuOpen(false);
+    lastScrollYRef.current = typeof window !== "undefined" ? Math.max(0, window.scrollY) : 0;
+  }, [pathname]);
+
+  useEffect(() => {
+    lastScrollYRef.current = Math.max(0, window.scrollY);
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const currentY = Math.max(0, window.scrollY);
+      setScrolled(currentY > 20);
+
+      if (currentY <= 48) {
+        setHidden(false);
+        lastScrollYRef.current = currentY;
+        return;
+      }
+
+      const delta = currentY - lastScrollYRef.current;
+      if (Math.abs(delta) < 8) return;
+
+      setHidden(delta > 0);
+      lastScrollYRef.current = currentY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const isNavHidden = hidden && !mobileMenuOpen;
 
   const isLinkActive = (href: string) => {
     if (href === "/") {
@@ -33,12 +60,31 @@ export function Nav() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 flex justify-center px-4 pt-3 md:pt-4 isolate">
+    <motion.header
+      initial={false}
+      animate={{
+        y: isNavHidden ? "-120%" : "0%",
+        opacity: isNavHidden ? 0 : 1,
+      }}
+      transition={
+        prefersReduced
+          ? { duration: 0 }
+          : { duration: 0.32, ease: [0.16, 1, 0.3, 1] }
+      }
+      onFocusCapture={() => setHidden(false)}
+      className="pointer-events-none fixed top-0 left-0 right-0 z-40 flex justify-center px-4 pt-3 md:pt-4 isolate"
+    >
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={introComplete ? { y: 0, opacity: 1 } : { y: -20, opacity: 0 }}
-        transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-        className={`flex w-full max-w-[1140px] items-center justify-between rounded-full border border-[var(--border)] px-4 py-2 transition-all duration-300 md:px-5 transform-gpu ${
+        transition={
+          prefersReduced
+            ? { duration: 0 }
+            : { duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }
+        }
+        className={`${
+          isNavHidden ? "pointer-events-none" : "pointer-events-auto"
+        } flex w-full max-w-[1140px] items-center justify-between rounded-full border border-[var(--border)] px-4 py-2 transition-all duration-300 md:px-5 transform-gpu ${
           scrolled
             ? "bg-[var(--bg-elevated)]/90 backdrop-blur-xl shadow-lg shadow-black/10 border-[var(--border-strong)]"
             : "bg-[var(--surface-glass)] backdrop-blur-md"
@@ -132,7 +178,7 @@ export function Nav() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-16 left-4 right-4 z-40 overflow-hidden rounded-2xl border border-[var(--border-strong)] bg-[var(--bg-elevated)]/95 p-4 backdrop-blur-2xl md:hidden shadow-2xl"
+            className="pointer-events-auto absolute top-16 left-4 right-4 z-40 overflow-hidden rounded-2xl border border-[var(--border-strong)] bg-[var(--bg-elevated)]/95 p-4 backdrop-blur-2xl md:hidden shadow-2xl"
           >
             <div className="flex flex-col gap-1">
               {siteConfig.navLinks.map((link) => (
@@ -165,6 +211,6 @@ export function Nav() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }
